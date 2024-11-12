@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seu Perfil - Thoth</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden; /* Evita rolagem no corpo */
+        }
+        .container {
+            max-width: 350px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            height: 90vh; /* Controla a altura da div container */
+            overflow-y: auto; /* Ativa a rolagem dentro da container */
+        }
+        .profile-header {
+            text-align: center;
+            color: #6C63FF;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .profile-image {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .profile-image img {
+            width: 80px;
+            height: 80px;
+        }
+        .profile-subtitle {
+            text-align: center;
+            font-size: 16px;
+            color: #6C63FF;
+            margin: 0;
+        }
+        .profile-points {
+            text-align: center;
+            font-size: 18px;
+            color: #6C63FF;
+            font-weight: bold;
+            margin: 0;
+            margin-top: 5px;
+        }
+        .badge-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .badge-carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px 0;
+        }
+        .badge-carousel img {
+            width: 50px;
+            height: 50px;
+        }
+        .mission-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        .mission-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin: 0;
+            color: #333;
+        }
+        .mission-description {
+            font-size: 12px;
+            color: #6C63FF;
+            margin: 5px 0 0;
+        }
+        .progress-bar-container {
+            margin-top: 5px;
+        }
+        .progress-bar {
+            background-color: #6C63FF;
+        }
+        .icon-bar {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px 10px 0 0;
+        }
+        .icon-bar i {
+            font-size: 24px;
+            color: #6C63FF;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="profile-header">Seu Perfil</h1>
+        <div class="profile-image">
+            <img src="../static/images/Logo_menor.png" alt="logo">
+        </div>
+        <p class="profile-subtitle">Explorador do Conhecimento</p>
+        <p class="profile-points">1,200 pts</p>
+
+        <div class="badge-section">
+            <span class="badge-title">Badges</span>
+            <a href="#" class="badge-link">Ver todas</a>
+        </div>
+        <div class="badge-carousel" style="background-color: #E6D9FF;">
+            <img src="../static/images/nivel1.png" alt="Badge 1">
+            <img src="../static/images/nivel2.png" alt="Badge 2">
+            <img src="../static/images/nivel3.png" alt="Badge 3">
+            <img src="../static/images/nivel4.png" alt="Badge 4">
+            <img src="../static/images/nivel5.png" alt="Badge 5">
+        </div>
+
+        <h5 class="mt-4">Missões</h5>
+        <div class="mission-card">
+            <p class="mission-title">Login por 7 dias seguidos</p>
+            <p class="mission-description">Ganhe 100 pontos por entrar no Thoth</p>
+            <div class="progress-bar-container">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <small>3/7</small>
+            </div>
+        </div>
+        <div class="mission-card">
+            <p class="mission-title">Acerte 10 exercícios</p>
+            <p class="mission-description">Ganhe 300 pontos por acertar exercícios</p>
+            <div class="progress-bar-container">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <small>8/10</small>
+            </div>
+        </div>
+        <div class="mission-card">
+            <p class="mission-title">Realizar 10 exercícios</p>
+            <p class="mission-description">Ganhe 200 pontos por realizar exercícios</p>
+            <div class="progress-bar-container">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <small>5/10</small>
+            </div>
+        </div>
+
+        <!-- Barra de navegação -->
+        <div class="icon-bar">
+            <i class="bi bi-house-door"></i>
+            <i class="bi bi-trophy"></i>
+            <i class="bi bi-search"></i>
+            <i class="bi bi-bookmark"></i>
+            <i class="bi bi-gear"></i>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

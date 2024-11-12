@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dinâmico - Thoth</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            max-width: 350px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            height: 90vh;
+            overflow-y: auto;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #6C63FF;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 10px 0;
+        }
+        .header i {
+            font-size: 24px;
+        }
+        .search-bar {
+            margin: 15px 0;
+        }
+        .topic-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .topic-card {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #eee;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+        .topic-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0.3;
+        }
+        .topic-title {
+            position: relative;
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 16px;
+            z-index: 1;
+        }
+        .topic-subtitle {
+            position: relative;
+            color: #ffffff;
+            font-size: 12px;
+            z-index: 1;
+        }
+        .icon-bar {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px 10px 0 0;
+        }
+        .icon-bar i {
+            font-size: 24px;
+            color: #6C63FF;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <i class="bi bi-arrow-left"></i>
+            <span id="pageTitle">Título Dinâmico</span>
+            <i class="bi bi-person-circle"></i>
+        </div>
+
+        <div class="search-bar">
+            <input type="search" class="form-control" placeholder="Pesquisar...">
+        </div>
+
+        <!-- Lista de Tópicos -->
+        <div class="topic-list" id="topicList"></div>
+
+        <!-- Barra de navegação -->
+        <div class="icon-bar">
+            <i class="bi bi-house-door"></i>
+            <i class="bi bi-trophy"></i>
+            <i class="bi bi-search"></i>
+            <i class="bi bi-bookmark"></i>
+            <i class="bi bi-gear"></i>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script>
+        // Simulação de dados da API
+        const apiData = {
+            title: "Matemática",
+            topics: [
+                { title: "Soma de Arcos",  imageUrl: "https://via.placeholder.com/150" },
+                { title: "Plano Cartesiano", subtitle: "Matemática", imageUrl: "https://via.placeholder.com/150" },
+                { title: "Ponto médio, Baricentro...", subtitle: "Matemática", imageUrl: "https://via.placeholder.com/150" },
+                { title: "Teorema D'Alembert", subtitle: "Matemática", imageUrl: "https://via.placeholder.com/150" },
+                { title: "Polinômios", subtitle: "Matemática", imageUrl: "https://via.placeholder.com/150" },
+                { title: "Números Primos", subtitle: "Matemática", imageUrl: "https://via.placeholder.com/150" },
+                { title: "Hipótese de Riemann", subtitle: "Matemática", imageUrl: "https://via.placeholder.com/150" },
+                { title: "Geometria Diferencial", subtitle: "Matemática", imageUrl: "https://via.placeholder.com/150" }
+            ]
+        };
+
+        // Função para carregar dados da API e preencher a página
+        function loadPageContent() {
+            // Define o título da página
+            document.getElementById("pageTitle").innerText = apiData.title;
+
+            // Preenche a lista de tópicos
+            const topicList = document.getElementById("topicList");
+            apiData.topics.forEach(topic => {
+                const topicCard = document.createElement("div");
+                topicCard.className = "topic-card";
+                topicCard.innerHTML = `
+                    <img src="${topic.imageUrl}" alt="${topic.title}">
+                    <div class="topic-title">${topic.title}</div>
+                    `;
+                    // <div class="topic-subtitle">${topic.subtitle}</div>
+                topicList.appendChild(topicCard);
+            });
+        }
+
+        // Carrega o conteúdo quando a página é carregada
+        loadPageContent();
+    </script>
+</body>
+</html>
