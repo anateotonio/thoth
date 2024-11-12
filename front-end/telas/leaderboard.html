@@ -17,6 +17,7 @@
             margin: 0;
             padding: 0;
             height: 100vh;
+            overflow: hidden; /* Evita rolagem no corpo */
         }
         .container {
             max-width: 350px;
@@ -24,7 +25,9 @@
             background-color: #ffffff;
             border-radius: 15px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 70px; /* Espaço para a barra de navegação */
+            position: relative;
+            height: 90vh; /* Controla a altura da div container */
+            overflow-y: auto; /* Ativa a rolagem dentro da container */
         }
         .leaderboard-header {
             font-size: 28px;
@@ -103,12 +106,9 @@
             padding: 15px;
             background-color: #fff;
             border-top: 1px solid #ddd;
-            width: 100%;
-            max-width: 350px;
             position: sticky;
             bottom: 0;
-            /* left: 50%; */
-            /* transform: translateX(-50%); */
+            width: 100%;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px 10px 0 0;
         }
@@ -151,9 +151,11 @@
         // Dados simulados da API para o ranking
         const apiData = {
             ranking: [
-                { position: 1, name: "Maria da Silva", points: "1,200 pts", profileImage: "../static/images/Logo_menor.png" },
-                { position: 2, name: "João Soares", points: "1,000 pts", profileImage: "../static/images/Logo_menor.png" },
-                { position: 3, name: "Alice Miranda", points: "930 pts", profileImage: "../static/images/Logo_menor.png" },
+                { position: 1, name: "Maria da Silva", points: "1,200", profileImage: "../static/images/Logo_menor.png" },
+                { position: 2, name: "João Soares", points: "1,000", profileImage: "../static/images/Logo_menor.png" },
+                { position: 3, name: "Alice Miranda", points: "930", profileImage: "../static/images/Logo_menor.png" },
+                { position: 4, name: "Rafael Costa", points: "930", profileImage: "../static/images/Logo_menor.png" },
+                { position: 5, name: "Ana Julia", points: "930", profileImage: "../static/images/Logo_menor.png" },
                 // Adicione mais usuários aqui, se necessário
             ]
         };
@@ -163,7 +165,7 @@
             const rankingList = document.getElementById("rankingList");
             apiData.ranking.forEach(user => {
                 const rankItem = document.createElement("div");
-                rankItem.className = `rank-item ${user.position === 1 ? "rank-1" : ""}`;
+                rankItem.className = `rank-item `;
                 rankItem.innerHTML = `
                     <div class="position">${user.position}º</div>
                     <div class="info">
