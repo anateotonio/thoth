@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorar - Thoth</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding-bottom: 70px; /* Espaço para a barra de navegação fixa */
+        }
+        .container {
+            max-width: 350px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .explore-header {
+            font-size: 28px;
+            font-weight: 600;
+            color: #6C63FF;
+            text-align: center;
+            padding: 10px 0;
+            font-weight: bold;
+        }
+        .carousel-item img {
+            border-radius: 10px;
+            height: 150px;
+            width: 100%;
+            object-fit: cover;
+        }
+        .category-btn {
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            text-align: center;
+        }
+        .mathematics { background-color: #4a90e2; }
+        .portuguese { background-color: #f39c12; }
+        .icon-bar {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 350px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px 10px 0 0;
+        }
+        .icon-bar i {
+            font-size: 24px;
+            color: #6C63FF;
+        }
+        .carousel-control-prev, .carousel-control-next {
+            width: 5%;
+        }
+        .carousel-control-prev-icon, .carousel-control-next-icon {
+            filter: invert(25%) sepia(76%) saturate(3551%) hue-rotate(245deg) brightness(90%) contrast(120%);
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); /* Adiciona um efeito de sombra para parecer mais "bold" */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="explore-header">Explorar</h1>
+        <div class="mb-3">
+            <input type="search" class="form-control" placeholder="Pesquisar...">
+        </div>
+
+        <!-- Recomendado para você -->
+        <h5>Recomendado para você</h5>
+        <div id="carouselRecommended" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner" id="carouselRecommendedInner"></div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselRecommended" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselRecommended" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+        <!-- Matérias -->
+        <h5 class="mt-4">Matérias</h5>
+        <div id="carouselSubjects" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner" id="carouselSubjectsInner"></div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselSubjects" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselSubjects" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+        <!-- Em alta -->
+        <h5 class="mt-4">Em alta</h5>
+        <div id="carouselTrending" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner" id="carouselTrendingInner"></div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselTrending" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselTrending" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Barra de navegação -->
+    <div class="icon-bar">
+        <i class="bi bi-house-door"></i>
+        <i class="bi bi-trophy"></i>
+        <i class="bi bi-search"></i>
+        <i class="bi bi-bookmark"></i>
+        <i class="bi bi-gear"></i>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script>
+        // Dados simulados da API
+        const apiData = {
+            recommended: [
+                { title: "Soma de Arcos", category: "Matemática", imageUrl: "../static/images/mathImage.png" },
+                { title: "Verbos", category: "Português", imageUrl: "https://via.placeholder.com/150" }
+            ],
+            subjects: [
+                { name: "Biologia", className: "mathematics" },
+                { name: "Português", className: "portuguese" },
+                { name: "Matemática", className: "mathematics" },
+                { name: "História", className: "portuguese" },
+                { name: "Geografia", className: "portuguese" }
+            ],
+            trending: [
+                { imageUrl: "https://via.placeholder.com/150", title: "Imagem 1" },
+                { imageUrl: "https://via.placeholder.com/150", title: "Imagem 2" }
+            ]
+        };
+
+        // Função para preencher carrossel "Recomendado para você"
+        function loadRecommendedCarousel() {
+            const carouselInner = document.getElementById("carouselRecommendedInner");
+            apiData.recommended.forEach((item, index) => {
+                const carouselItem = document.createElement("div");
+                carouselItem.className = `carousel-item ${index === 0 ? "active" : ""}`;
+                carouselItem.innerHTML = `
+                    <img src="${item.imageUrl}" class="d-block w-100" alt="${item.title}">
+                    <div class="carousel-caption">
+                        <h5>${item.title}</h5>
+                        <p>${item.category}</p>
+                    </div>
+                `;
+                carouselInner.appendChild(carouselItem);
+            });
+        }
+
+        // Função para preencher carrossel de "Matérias"
+        function loadSubjectsCarousel() {
+            const carouselInner = document.getElementById("carouselSubjectsInner");
+
+            // Agrupar as matérias em pares
+            for (let i = 0; i < apiData.subjects.length; i += 2) {
+                const item = document.createElement("div");
+                item.className = `carousel-item ${i === 0 ? "active" : ""}`;
+                item.innerHTML = `<div class="d-flex justify-content-around"></div>`;
+
+                // Adicionar duas matérias ao item
+                for (let j = i; j < i + 2 && j < apiData.subjects.length; j++) {
+                    const subject = apiData.subjects[j];
+                    item.querySelector('.d-flex').innerHTML += `
+                        <button class="category-btn ${subject.className}">${subject.name}</button>
+                    `;
+                }
+
+                carouselInner.appendChild(item);
+            }
+        }
+
+        // Função para preencher carrossel "Em alta"
+        function loadTrendingCarousel() {
+            const carouselInner = document.getElementById("carouselTrendingInner");
+            apiData.trending.forEach((item, index) => {
+                const carouselItem = document.createElement("div");
+                carouselItem.className = `carousel-item ${index === 0 ? "active" : ""}`;
+                carouselItem.innerHTML = `
+                    <img src="${item.imageUrl}" class="d-block w-100" alt="${item.title}">
+                `;
+                carouselInner.appendChild(carouselItem);
+            });
+        }
+
+        // Chamada das funções de preenchimento
+        loadRecommendedCarousel();
+        loadSubjectsCarousel();
+        loadTrendingCarousel();
+    </script>
+</body>
+</html>
