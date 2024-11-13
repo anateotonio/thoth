@@ -11,6 +11,10 @@ body {
     padding-bottom: 80px;
 }
 
+.fs-3{
+    color: #5A1EF4;
+}
+
 .logo {
     max-width: 100px;
 }
@@ -32,11 +36,11 @@ body {
     margin-bottom: 20px;
     margin-left:30px;
   }
-    .back-button a {
+.back-button a {
     color: #6C63FF;
     font-weight: bold;
     }
-     .back-button a:hover {
+ .back-button a:hover {
     color: #6C63FF;
 }
 
@@ -52,7 +56,7 @@ body {
     bottom: 10px;
     width: 95%;
     left: 2.5%;
-    z-index: 1000; /* Garante que a barra fique acima de outros elementos */
+    z-index: 1000; 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 

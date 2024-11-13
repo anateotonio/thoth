@@ -7,10 +7,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="../../static/css/style.css" rel="stylesheet">
+
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -19,12 +20,15 @@
             height: 100vh;
             overflow: hidden;
         }
+
+        .bottom-nav i{
+            color: #6c63ff !important;
+        }
         .container {
-            max-width: 350px;
+            width: 100%;
             padding: 20px;
             background-color: #ffffff;
             border-radius: 15px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
             position: relative;
             height: 90vh;
             overflow-y: auto;
@@ -98,33 +102,49 @@
             font-size: 24px;
             color: #6C63FF;
         }
+
+        .container .d-flex #pageTitle  {
+            font-size: 24px;
+            color: #6C63FF;
+            font-weight: 600;
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header">
-            <i class="bi bi-arrow-left"></i>
-            <span id="pageTitle">Título Dinâmico</span>
-            <i class="bi bi-person-circle"></i>
-        </div>
-
-        <div class="search-bar">
-            <input type="search" class="form-control" placeholder="Pesquisar...">
-        </div>
+        <div class="container py-1">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="back-button mb-3">
+                    <a href="javascript:history.back()" class="text-decoration-none">
+                        <span style="font-size: 4rem;">&lt;</span>
+                    </a>
+                </div>
+                <span id="pageTitle">Título Dinâmico</span>
+                <img src="../../static/images/Logo_menor.png" alt="Badge Icon" class="img-fluid" style="width: 60px;">
+            </div>
+    
+            <div class="search-bar my-3">
+                <div class="input-group">
+                    <input type="search" class="form-control" placeholder="Pesquisar...">
+                    <span class="input-group-text bg-white border-start-0">
+                        <i class="bi bi-search" style="color: #6c63ff;"></i>  <!-- Ícone de busca roxo -->
+                    </span>
+                </div>
+            </div>
 
         <!-- Lista de Tópicos -->
         <div class="topic-list" id="topicList"></div>
 
         <!-- Barra de navegação -->
-        <div class="icon-bar">
-            <i class="bi bi-house-door"></i>
-            <i class="bi bi-trophy"></i>
-            <i class="bi bi-search"></i>
-            <i class="bi bi-bookmark"></i>
-            <i class="bi bi-gear"></i>
-        </div>
+        <div class="bottom-nav shadow">
+            <i class="bi bi-house-door-fill fs-4 text-primary"></i>
+            <i class="bi bi-trophy-fill fs-4 text-primary"></i>
+            <i class="bi bi-search fs-4 text-primary"></i> 
+            <i class="bi bi-bookmark-fill fs-4 text-primary"></i>
+            <i class="bi bi-gear-fill fs-4 text-primary"></i>
     </div>
+    
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>

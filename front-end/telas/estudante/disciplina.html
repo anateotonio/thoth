@@ -7,183 +7,133 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="../../static/css/style.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            overflow: hidden;
-        }
-        .container {
-            max-width: 350px;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            position: relative;
-            height: 90vh;
-            overflow-y: auto;
-        }
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            color: #6C63FF;
-            font-size: 24px;
-            font-weight: bold;
-            padding: 10px 0;
-        }
-        .header i {
-            font-size: 24px;
-        }
-        .search-bar {
-            margin: 15px 0;
-        }
-        .section-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #6C63FF;
-            margin: 15px 0 10px;
-        }
-        .card-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        .card {
-            position: relative;
-            border-radius: 10px;
-            overflow: hidden;
-            background-color: #eee;
-            height: 130px;
-        }
-        .card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .card-title {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            color: #ffffff;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        .bookmark-icon {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 20px;
-            color: #ffffff;
-        }
-        .icon-bar {
-            display: flex;
-            justify-content: space-around;
-            padding: 15px;
-            background-color: #fff;
-            border-top: 1px solid #ddd;
-            position: sticky;
-            bottom: 0;
-            width: 100%;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px 10px 0 0;
-        }
-        .icon-bar i {
-            font-size: 24px;
-            color: #6C63FF;
-        }
+ /* Título dinâmico (Biologia) */
+        #pageTitle {
+                color: #6c63ff; 
+                font-weight: 800; 
+                font-size: 30px;
+            }
+
+      
+            h5 {
+                color: #6c63ff !important; 
+                font-weight: 600;
+            }
+
+            /* Ajustes para os ícones e navegação inferior */
+            .bottom-nav i {
+                color: #6c63ff !important;
+            }
+
+            /* Ajustes na imagem */
+            img {
+                max-height: 300px;
+               
+            }
+                
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header">
-            <i class="bi bi-arrow-left"></i>
+
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="back-button mb-3">
+                <a href="javascript:history.back()" class="text-decoration-none">
+                    <span style="font-size: 4rem;">&lt;</span>
+                </a>
+            </div>
             <span id="pageTitle">Título Dinâmico</span>
-            <img src="../static/images/Logo_menor.png" style="height: 50px;" alt="Badge Icon">
+            <img src="../../static/images/Logo_menor.png" alt="Badge Icon" class="img-fluid" style="width: 60px;">
         </div>
 
-        <div class="search-bar">
+    <div class="search-bar my-3">
+        <div class="input-group">
             <input type="search" class="form-control" placeholder="Pesquisar...">
-        </div>
-
-        <div id="sectionsContainer"></div>
-
-        <!-- Barra de navegação -->
-        <div class="icon-bar">
-            <i class="bi bi-house-door"></i>
-            <i class="bi bi-trophy"></i>
-            <i class="bi bi-search"></i>
-            <i class="bi bi-bookmark"></i>
-            <i class="bi bi-gear"></i>
+            <span class="input-group-text bg-white border-start-0">
+                <i class="bi bi-search" style="color: #6c63ff;"></i>  <!-- Ícone de busca roxo -->
+            </span>
         </div>
     </div>
+    
+    <div id="sectionsContainer"></div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-    <script>
-        // Simulação de dados da API
-        const apiData = {
-            title: "Biologia",
-            sections: [
-                {
-                    title: "Zoologia",
-                    topics: [
-                        { title: "Mamíferos: o que são?", imageUrl: "https://via.placeholder.com/150" },
-                        { title: "Vidas Marítimas", imageUrl: "https://via.placeholder.com/150" }
-                    ]
-                },
-                {
-                    title: "Botânica",
-                    topics: [
-                        { title: "Fotossíntese", imageUrl: "https://via.placeholder.com/150" },
-                        { title: "Metabolismo", imageUrl: "https://via.placeholder.com/150" }
-                    ]
-                }
-            ]
-        };
+<div class="bottom-nav shadow">
+    <i class="bi bi-house-door-fill fs-4 text-primary"></i>
+    <i class="bi bi-trophy-fill fs-4 text-primary"></i>
+    <i class="bi bi-search fs-4 text-primary"></i> 
+    <i class="bi bi-bookmark-fill fs-4 text-primary"></i>
+    <i class="bi bi-gear-fill fs-4 text-primary"></i>
+</div>
 
-        // Função para carregar dados da API e preencher a página
-        function loadPageContent() {
-            // Define o título da página
-            document.getElementById("pageTitle").innerText = apiData.title;
 
-            // Preenche as seções
-            const sectionsContainer = document.getElementById("sectionsContainer");
-            apiData.sections.forEach(section => {
-                // Cria o título da seção
-                const sectionTitle = document.createElement("h5");
-                sectionTitle.className = "section-title";
-                sectionTitle.innerText = section.title;
-                sectionsContainer.appendChild(sectionTitle);
 
-                // Cria o grid de tópicos
-                const cardGrid = document.createElement("div");
-                cardGrid.className = "card-grid";
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script>
+    // Simulação de dados da API
+    const apiData = {
+        title: "Biologia",
+        sections: [
+            {
+                title: "Zoologia",
+                topics: [
+                    { title: "Mamíferos: o que são?", imageUrl: "../../static/images/animal.jpg" },
+                    { title: "Vidas Marítimas", imageUrl: "../../static/images/mar.jpg" }
+                ]
+            },
+            {
+                title: "Botânica",
+                topics: [
+                    { title: "Fotossíntese", imageUrl: "../../static/images/fotosintese.jpg" },
+                    { title: "Metabolismo", imageUrl: "../../static/images/botanica.jpg" }
+                ]
+            }
+        ]
+    };
 
-                section.topics.forEach(topic => {
-                    const card = document.createElement("div");
-                    card.className = "card";
-                    card.innerHTML = `
-                        <img src="${topic.imageUrl}" alt="${topic.title}">
-                        <i class="bi bi-bookmark bookmark-icon"></i>
-                        <div class="card-title">${topic.title}</div>
-                    `;
-                    cardGrid.appendChild(card);
-                });
+    // Função para carregar dados da API e preencher a página
+    function loadPageContent() {
+        // Define o título da página
+        document.getElementById("pageTitle").innerText = apiData.title;
 
-                sectionsContainer.appendChild(cardGrid);
+        // Preenche as seções
+        const sectionsContainer = document.getElementById("sectionsContainer");
+        apiData.sections.forEach(section => {
+            // Cria o título da seção
+            const sectionTitle = document.createElement("h5");
+            sectionTitle.className = "text-primary my-3";
+            sectionTitle.innerText = section.title;
+            sectionsContainer.appendChild(sectionTitle);
+
+            // Cria o grid de tópicos
+            const cardGrid = document.createElement("div");
+            cardGrid.className = "row row-cols-2 g-2";
+
+            section.topics.forEach(topic => {
+                const card = document.createElement("div");
+                card.className = "col";
+                card.innerHTML = `
+                    <div class="card h-100 border-0">
+                        <img src="${topic.imageUrl}" class="card-img-top rounded" alt="${topic.title}">
+                        <div class="card-body p-2">
+                            <p class="card-title text-truncate">${topic.title}</p>
+                            <i class="bi bi-bookmark position-absolute top-0 end-0 m-2"></i>
+                        </div>
+                    </div>
+                `;
+                cardGrid.appendChild(card);
             });
-        }
 
-        // Carrega o conteúdo quando a página é carregada
-        loadPageContent();
-    </script>
+            sectionsContainer.appendChild(cardGrid);
+        });
+    }
+
+    // Carrega o conteúdo quando a página é carregada
+    loadPageContent();
+</script>
 </body>
 </html>
