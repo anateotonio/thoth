@@ -9,12 +9,44 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="../../static/css/style.css">
     <link rel="stylesheet" href="../../static/css/home_prof_style.css">
+    <style>
+        /* Estilo para os popups */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .popup-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            width: 300px;
+        }
+
+        .popup-content i {
+            font-size: 2rem;
+            color: green;
+        }
+
+        .popup-content .btn {
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-4">
         <!-- Botão Voltar -->
         <div class="back-button mb-3">
-            <a href="javascript:history.back()" class="text-decoration-none">
+            <a href="javascript:void(0)" class="text-decoration-none" id="backButton">
                 <span style="font-size: 4rem;">&lt;</span>
             </a>
         </div>
@@ -32,7 +64,6 @@
         <div class="mb-3">
             <label class="form-label">Alternativas</label>
             <div id="alternativas-container">
-                <!-- Alternativa de exemplo -->
                 <div class="input-group mb-2 alternativa">
                     <span class="input-group-text bg-danger text-white toggle-color">A</span>
                     <input type="text" class="form-control" placeholder="Digite a resposta A aqui...">
@@ -44,7 +75,6 @@
                     <button class="btn btn-outline-secondary remove-alternativa">X</button>
                 </div>
             </div>
-            <!-- Botão para adicionar mais alternativas -->
             <button class="btn btn-outline-primary w-100 add-alternativa" style="color: white; background-color: #5A1EF4;">+</button>
         </div>
 
@@ -63,37 +93,74 @@
         </div>
 
         <!-- Botão Salvar -->
-        <button class="btn btn-primary w-100 mt-3">Salvar</button>
+        <button class="btn btn-primary w-100 mt-3" id="saveButton">Salvar</button>
+    </div>
+
+    <!-- Popup de Sucesso -->
+    <div class="popup-overlay" id="successPopup">
+        <div class="popup-content">
+            <i class="bi bi-check-circle-fill"></i>
+            <p>Exercício criado com sucesso!</p>
+            <button class="btn btn-primary" onclick="closePopup('successPopup')">OK</button>
+        </div>
+    </div>
+
+    <!-- Popup de Confirmação de Saída -->
+    <div class="popup-overlay" id="exitPopup">
+        <div class="popup-content">
+            <p>O exercício não será salvo se sair da página. Deseja continuar?</p>
+            <button class="btn btn-danger" onclick="exitPage()">Sim</button>
+            <button class="btn btn-secondary" onclick="closePopup('exitPopup')">Cancelar</button>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Função para alternar a cor do botão entre vermelho e verde
+        // Função para mostrar o popup
+        function showPopup(popupId) {
+            document.getElementById(popupId).style.display = 'flex';
+        }
+
+        // Função para fechar o popup
+        function closePopup(popupId) {
+            document.getElementById(popupId).style.display = 'none';
+        }
+
+        // Evento do botão Salvar para mostrar o popup de sucesso
+        document.getElementById('saveButton').addEventListener('click', function() {
+            showPopup('successPopup');
+        });
+
+        // Função para sair da página
+        function exitPage() {
+            window.history.back();
+        }
+
+        // Evento do botão Voltar para mostrar o popup de confirmação de saída
+        document.getElementById('backButton').addEventListener('click', function() {
+            showPopup('exitPopup');
+        });
+
+        // Alternância de cor para as alternativas
         document.addEventListener('click', function(event) {
             if (event.target.classList.contains('toggle-color')) {
-                if (event.target.classList.contains('bg-danger')) {
-                    event.target.classList.remove('bg-danger');
-                    event.target.classList.add('bg-success');
-                } else {
-                    event.target.classList.remove('bg-success');
-                    event.target.classList.add('bg-danger');
-                }
+                event.target.classList.toggle('bg-danger');
+                event.target.classList.toggle('bg-success');
             }
         });
 
-        // Função para remover uma alternativa
+        // Remoção de alternativa
         document.addEventListener('click', function(event) {
             if (event.target.classList.contains('remove-alternativa')) {
                 event.target.closest('.alternativa').remove();
             }
         });
 
-        // Função para adicionar uma nova alternativa
+        // Adição de nova alternativa
         document.querySelector('.add-alternativa').addEventListener('click', function() {
             const alternativasContainer = document.getElementById('alternativas-container');
             const alternativaCount = alternativasContainer.querySelectorAll('.alternativa').length;
 
-            // Criando uma nova alternativa
             const novaAlternativa = document.createElement('div');
             novaAlternativa.classList.add('input-group', 'mb-2', 'alternativa');
             novaAlternativa.innerHTML = `
