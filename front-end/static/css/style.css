@@ -8,6 +8,7 @@ body {
     font-family: 'Poppins', sans-serif;
     background-color: white;
     color: #5A1EF4;
+    padding-bottom: 80px;
 }
 
 .logo {
@@ -23,6 +24,36 @@ body {
 .btn-primary:hover , .btn-secondary:hover{
     background-color: #4B0FE4;
     border-color: #4B0FE4;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-left:30px;
+  }
+    .back-button a {
+    color: #6C63FF;
+    font-weight: bold;
+    }
+     .back-button a:hover {
+    color: #6C63FF;
+}
+
+.bottom-nav {
+    background-color: #fff;
+    font-size: 1.7em;
+    border-radius: 25px;
+    color: #6C63FF;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    position: fixed;
+    bottom: 10px;
+    width: 95%;
+    left: 2.5%;
+    z-index: 1000; /* Garante que a barra fique acima de outros elementos */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 

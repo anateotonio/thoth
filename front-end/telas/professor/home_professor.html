@@ -5,14 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Professor - Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../static/css/style.css" rel="stylesheet">
-    <link href="../../static/css/home_prof_style.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-
-      
-    </style>
+    <link href="../../static/css/style.css" rel="stylesheet">
+    <link href="../../static/css/home_prof_style.css" rel="stylesheet">
 </head>
 <body>
     <div class="container mt-4">
@@ -41,43 +37,45 @@
         </div>
 
         <!-- Seus Tots -->
-        <h5 class="mt-4">Seus Tots</h5>
+        <div class="d-flex align-items-center mt-4">
+            <h5 class="mb-0">Seus Tots</h5>
+            <a href="tots_professor.html" class="ms-2 text-secondary" style="font-size: 0.875em;">Ver todos</a>
+        </div>
+        
         <div id="totsCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div id="carouselRecommended" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="../../static/images/mathImage.png" class="d-block w-100 img-fluid" alt="Sum of Arcs" style="max-height: 200px; object-fit: cover;">
-                        <div class="carousel-caption d-none d-md-block text-start">
-                            <h5 class="card-title">Sum of Arcs</h5>
-                            <p>Matemática</p>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="../../static/images/portugues.jpg" class="d-block w-100 img-fluid" alt="Verbs" style="max-height: 200px; object-fit: cover;">
-                        <div class="carousel-caption d-none d-md-block text-start">
-                            <h5 class="card-title">Verbs</h5>
-                            <p>Português</p>
-                        </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="../../static/images/mathImage.png" class="d-block w-100 img-fluid" alt="Sum of Arcs" style="max-height: 200px; object-fit: cover;">
+                    <div class="carousel-caption d-none d-md-block text-start">
+                        <h5 class="card-title">Sum of Arcs</h5>
+                        <p>Matemática</p>
                     </div>
                 </div>
-            
-                <!-- Botão de navegação para o anterior -->
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselRecommended" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-            
-                <!-- Botão de navegação para o próximo -->
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselRecommended" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+                <div class="carousel-item">
+                    <img src="../../static/images/portugues.jpg" class="d-block w-100 img-fluid" alt="Verbs" style="max-height: 200px; object-fit: cover;">
+                    <div class="carousel-caption d-none d-md-block text-start">
+                        <h5 class="card-title">Verbs</h5>
+                        <p>Português</p>
+                    </div>
+                </div>
             </div>
-            
+            <!-- Botão de navegação para o anterior -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#totsCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <!-- Botão de navegação para o próximo -->
+            <button class="carousel-control-next" type="button" data-bs-target="#totsCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
 
         <!-- Seus Exercícios -->
-        <h5 class="mt-4">Seus Exercícios</h5>
+        <div class="d-flex align-items-center mt-4">
+            <h5 class="mb-0">Seus Exercícios</h5>
+            <a href="exercicios_professor.html" class="ms-2 text-secondary" style="font-size: 0.875em;">Ver todos</a>
+        </div>
         <div class="list-group">
             <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="background-color: #6C63FF; color: #fff;">
                 Exercício Soma de Arcos
@@ -85,18 +83,18 @@
             </a>
             <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="background-color: #6C63FF; color: #fff;">
                 Exercício Subtração de Angulos
-                <span class="badge bg-light text-dark">Mathematics</span>
+                <span class="badge bg-light text-dark">Matemática</span>
             </a>
         </div>
     </div>
 
     <!-- Botão Flutuante -->
-    <div class="fab-button shadow">
+    <div class="fab-button shadow position-fixed bottom-0 end-0 m-3" onclick="window.location.href='criar_tot.html'">
         <i class="bi bi-plus-lg"></i>
     </div>
-
+    
     <!-- Navegação Inferior -->
-    <div class="bottom-nav shadow">
+    <div class="bottom-nav shadow fixed-bottom d-flex justify-content-around py-2 bg-light">
         <i class="bi bi-house-door-fill"></i>
         <i class="bi bi-bell-fill"></i>
         <i class="bi bi-gear-fill"></i>
