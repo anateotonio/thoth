@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criação de Tot</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/style.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h3 class="mb-3">Criação de Tot</h3>
+
+        <!-- Dropdown para Matéria -->
+        <div class="mb-3">
+            <label for="materia" class="form-label">Matéria</label>
+            <select id="materia" class="form-select">
+                <option value="" disabled selected>Selecione a matéria</option>
+                <option value="matematica">Matemática</option>
+                <option value="portugues">Português</option>
+                <option value="historia">História</option>
+            </select>
+        </div>
+
+        <!-- Dropdown para Categoria -->
+        <div class="mb-3">
+            <label for="categoria" class="form-label">Categoria</label>
+            <select id="categoria" class="form-select">
+                <option value="" disabled selected>Selecione a categoria</option>
+                <option value="algebra">Álgebra</option>
+                <option value="gramatica">Gramática</option>
+                <option value="geografia">Geografia</option>
+            </select>
+        </div>
+
+        <!-- Dropdown para Subcategoria -->
+        <div class="mb-3">
+            <label for="subcategoria" class="form-label">Subcategoria</label>
+            <select id="subcategoria" class="form-select">
+                <option value="" disabled selected>Selecione a subcategoria</option>
+                <option value="equacoes">Equações</option>
+                <option value="verbos">Verbos</option>
+                <option value="mapas">Mapas</option>
+            </select>
+        </div>
+
+        <!-- Botão de Adicionar Conteúdo -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5>Conteúdo</h5>
+            <button id="addContentBtn" class="btn btn-outline-primary btn-sm">+ Adicionar Conteúdo</button>
+        </div>
+
+        <!-- Área para Exibir os Tipos de Conteúdo Adicionados -->
+        <div id="conteudoContainer" class="mb-4"></div>
+
+        <!-- Botão para Criar o Tot -->
+        <button class="btn btn-primary w-100 mt-4">Criar Tot</button>
+
+        <!-- Modal para Seleção de Conteúdo -->
+        <div class="modal fade" id="contentModal" tabindex="-1" aria-labelledby="contentModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="contentModalLabel">Selecione o Tipo de Conteúdo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-action" onclick="selectContent('texto')">Texto</li>
+                            <li class="list-group-item list-group-item-action" onclick="selectContent('imagem')">Imagem</li>
+                            <li class="list-group-item list-group-item-action" onclick="selectContent('vídeo')">Vídeo</li>
+                            <li class="list-group-item list-group-item-action" onclick="selectContent('link')">Link</li>
+                            <li class="list-group-item list-group-item-action" onclick="selectContent('citação')">Citação</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const addContentBtn = document.getElementById('addContentBtn');
+        const conteudoContainer = document.getElementById('conteudoContainer');
+        const contentModal = new bootstrap.Modal(document.getElementById('contentModal'));
+
+        // Abrir o modal ao clicar no botão de adicionar conteúdo
+        addContentBtn.addEventListener('click', () => {
+            contentModal.show();
+        });
+
+        // Função para tratar a seleção de conteúdo
+        function selectContent(type) {
+            let contentHtml = '';
+
+            switch (type) {
+                case 'texto':
+                    contentHtml = `
+                        <div class="mb-3">
+                            <label class="form-label">Texto</label>
+                            <textarea class="form-control" rows="3" placeholder="Digite o texto"></textarea>
+                        </div>`;
+                    break;
+                case 'imagem':
+                    contentHtml = `
+                        <div class="mb-3">
+                            <label class="form-label">Upload de Imagem</label>
+                            <input type="file" class="form-control" accept="image/*">
+                        </div>`;
+                    break;
+                case 'vídeo':
+                    contentHtml = `
+                        <div class="mb-3">
+                            <label class="form-label">Upload de Vídeo</label>
+                            <input type="file" class="form-control" accept="video/*">
+                        </div>`;
+                    break;
+                case 'link':
+                    contentHtml = `
+                        <div class="mb-3">
+                            <label class="form-label">Link</label>
+                            <input type="url" class="form-control" placeholder="Insira o URL">
+                        </div>`;
+                    break;
+                case 'citação':
+                    contentHtml = `
+                        <div class="mb-3">
+                            <label class="form-label">Citação</label>
+                            <input type="text" class="form-control" placeholder="Digite a citação">
+                        </div>`;
+                    break;
+                default:
+                    alert("Tipo de conteúdo inválido.");
+                    return;
+            }
+
+            // Adiciona o conteúdo ao container
+            const contentElement = document.createElement('div');
+            contentElement.innerHTML = contentHtml;
+            conteudoContainer.appendChild(contentElement);
+
+            // Fechar o modal
+            contentModal.hide();
+        }
+    </script>
+</body>
+</html>
