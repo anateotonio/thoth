@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edição de Tot</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../static/css/style.css" rel="stylesheet">
+    <style>
+        p, a, blockquote {
+            color: #4a4a4a; /* Cinza escuro */
+        }
+        .editable {
+            border-bottom: 1px dashed #aaa;
+        }
+        h3 {
+            font-size: 1.5rem;
+        }
+        .align-edit-btn {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="align-edit-btn mb-3">
+            <h3 id="title" class="editable flex-grow-1">Soma de Arcos</h3>
+            <button class="btn btn-sm btn-outline-secondary editBtn" data-target="title">
+                <i class="bi bi-pencil"></i>
+            </button>
+        </div>
+        <p class="text-muted">Matemática > Geometria > Trigonometria</p>
+
+        <!-- Descrição -->
+        <div class="align-edit-btn mb-3">
+            <p id="description" class="editable flex-grow-1">Na trigonometria, é necessário a realização de operações com arcos...</p>
+            <button class="btn btn-sm btn-outline-secondary editBtn" data-target="description">
+                <i class="bi bi-pencil"></i>
+            </button>
+        </div>
+
+        <!-- Conteúdos Existentes -->
+        <div id="conteudoContainer">
+            <div class="align-edit-btn mb-3">
+                <label class="form-label me-2">Texto</label>
+                <p id="textContent" class="editable flex-grow-1">Este é um exemplo de texto editável.</p>
+                <button class="btn btn-sm btn-outline-secondary editBtn" data-target="textContent">
+                    <i class="bi bi-pencil"></i>
+                </button>
+            </div>
+
+            <div class="align-edit-btn mb-3">
+                <label class="form-label me-2">Link</label>
+                <a href="#" id="linkContent" class="editable flex-grow-1">https://exemplo.com</a>
+                <button class="btn btn-sm btn-outline-secondary editBtn" data-target="linkContent">
+                    <i class="bi bi-pencil"></i>
+                </button>
+            </div>
+
+            <div class="align-edit-btn mb-3">
+                <label class="form-label me-2">Citação</label>
+                <blockquote id="quoteContent" class="blockquote editable flex-grow-1">"Esta é uma citação de exemplo."</blockquote>
+                <button class="btn btn-sm btn-outline-secondary editBtn" data-target="quoteContent">
+                    <i class="bi bi-pencil"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Botão para Adicionar Conteúdo -->
+        <button id="addContentBtn" class="btn btn-outline-primary w-100 mb-3">+ Adicionar Conteúdo</button>
+
+        <!-- Botões de Ação -->
+        <button class="btn btn-outline-primary w-100 mb-3">Editar Exercícios</button>
+        <button id="deleteTotBtn" class="btn btn-danger w-100 mb-3">Excluir Tot</button>
+        <button class="btn btn-primary w-100">Salvar</button>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmação</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Tem certeza que deseja excluir este Tot?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="confirmDeleteBtn" class="btn btn-primary">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+      <!-- Modal para Seleção de Conteúdo -->
+      <div class="modal fade" id="contentModal" tabindex="-1" aria-labelledby="contentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="contentModalLabel">Selecione o Tipo de Conteúdo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-item-action" onclick="selectContent('texto')">Texto</li>
+                        <li class="list-group-item list-group-item-action" onclick="selectContent('imagem')">Imagem</li>
+                        <li class="list-group-item list-group-item-action" onclick="selectContent('vídeo')">Vídeo</li>
+                        <li class="list-group-item list-group-item-action" onclick="selectContent('link')">Link</li>
+                        <li class="list-group-item list-group-item-action" onclick="selectContent('citação')">Citação</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Função para edição inline
+        document.querySelectorAll('.editBtn').forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.getAttribute('data-target');
+                const targetElement = document.getElementById(targetId);
+
+                if (targetElement.isContentEditable) {
+                    targetElement.contentEditable = "false";
+                    button.innerHTML = '<i class="bi bi-pencil"></i>';
+                } else {
+                    targetElement.contentEditable = "true";
+                    targetElement.focus();
+                    button.innerHTML = '<i class="bi bi-check-lg"></i>';
+                }
+            });
+        });
+
+        // Remover o modo editável quando perder o foco
+        document.querySelectorAll('.editable').forEach(element => {
+            element.addEventListener('blur', () => {
+                element.contentEditable = "false";
+                document.querySelector(`[data-target="${element.id}"]`).innerHTML = '<i class="bi bi-pencil"></i>';
+            });
+        });
+
+        // Confirmação ao excluir o Tot
+        const deleteTotBtn = document.getElementById('deleteTotBtn');
+        const confirmDeleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+        deleteTotBtn.addEventListener('click', () => {
+            confirmDeleteModal.show();
+        });
+
+        confirmDeleteBtn.addEventListener('click', () => {
+            alert('Tot excluído com sucesso!');
+            confirmDeleteModal.hide();
+        });
+
+
+
+        //modal conteudo
+
+        const addContentBtn = document.getElementById('addContentBtn');
+        const conteudoContainer = document.getElementById('conteudoContainer');
+        const contentModal = new bootstrap.Modal(document.getElementById('contentModal'));
+
+        // Abrir o modal ao clicar no botão de adicionar conteúdo
+        addContentBtn.addEventListener('click', () => {
+            contentModal.show();
+        });
+
+        // Função para tratar a seleção de conteúdo
+        function selectContent(type) {
+            let contentHtml = '';
+
+            switch (type) {
+                case 'texto':
+                    contentHtml = `
+                        <div class="mb-3">
+                            <label class="form-label">Texto</label>
+                            <textarea class="form-control" rows="3" placeholder="Digite o texto"></textarea>
+                        </div>`;
+                    break;
+                case 'imagem':
+                    contentHtml = `
+                        <div class="mb-3">
+                            <label class="form-label">Upload de Imagem</label>
+                            <input type="file" class="form-control" accept="image/*">
+                        </div>`;
+                    break;
+                case 'vídeo':
+                    contentHtml = `
+                        <div class="mb-3">
+                            <label class="form-label">Upload de Vídeo</label>
+                            <input type="file" class="form-control" accept="video/*">
+                        </div>`;
+                    break;
+                case 'link':
+                    contentHtml = `
+                        <div class="mb-3">
+                            <label class="form-label">Link</label>
+                            <input type="url" class="form-control" placeholder="Insira o URL">
+                        </div>`;
+                    break;
+                case 'citação':
+                    contentHtml = `
+                        <div class="mb-3">
+                            <label class="form-label">Citação</label>
+                            <input type="text" class="form-control" placeholder="Digite a citação">
+                        </div>`;
+                    break;
+                default:
+                    alert("Tipo de conteúdo inválido.");
+                    return;
+            }
+
+            // Adiciona o conteúdo ao container
+            const contentElement = document.createElement('div');
+            contentElement.innerHTML = contentHtml;
+            conteudoContainer.appendChild(contentElement);
+
+            // Fechar o modal
+            contentModal.hide();
+        }
+    </script>
+</body>
+</html>

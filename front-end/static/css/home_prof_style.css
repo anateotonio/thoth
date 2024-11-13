@@ -1,0 +1,58 @@
+.balance-card {
+    background-color: #d5dee6;
+    border-radius: 15px;
+    color: #6C63FF;
+    padding: 20px;
+}
+.balance-card h1 {
+    font-size: 36px;
+    margin: 0;
+}
+.balance-card .btn {
+    background-color: #6C63FF;
+    color: #fff;
+    border-radius: 20px;
+}
+.stats-card {
+    background-color: #6C63FF;
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    color: #fff;
+}
+.stats-card h5 {
+    font-weight: bold;
+    margin: 0;
+}
+.card-title {
+    font-weight: bold;
+}
+.carousel-item img {
+    border-radius: 15px;
+}
+.bottom-nav {
+    background-color: #fff;
+    border-radius: 25px;
+    color: #6C63FF;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    position: fixed;
+    bottom: 10px;
+    width: 95%;
+    left: 2.5%;
+}
+.fab-button {
+    background-color: #6C63FF;
+    border-radius: 50%;
+    color: #fff;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    font-size: 24px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

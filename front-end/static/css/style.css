@@ -4,17 +4,25 @@
     font-family: 'Poppins', sans-serif;
 }
 
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: white;
+    color: #5A1EF4;
+}
+
 .logo {
     max-width: 100px;
 }
 
 /* Cor personalizada do botão */
-.btn-primary {
+.btn-primary, .btn-secondary {
     background-color: #5A1EF4;
     border-color: #5A1EF4;
 }
 
-.btn-primary:hover {
+.btn-primary:hover , .btn-secondary:hover{
     background-color: #4B0FE4;
     border-color: #4B0FE4;
 }
+
+
