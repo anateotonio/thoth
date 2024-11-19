@@ -1,0 +1,271 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Tot</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../static/css/style.css" rel="stylesheet">
+    <link href="../../static/css/home_prof_style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="back-button mb-3">
+                <a href="#" id="back-button" class="text-decoration-none">
+                    <span style="font-size: 4rem;">&lt;</span>
+                </a>
+                
+            </div>
+            <h1 class="fs-3 fw-bold">Criar Tot</h1>
+            <img src="../../static/images/Logo_menor.png" alt="Badge Icon" class="img-fluid" style="width: 60px;">
+        </div>
+
+        <div class="container mt-4">
+            <!-- Dropdown para Matéria -->
+            <div class="mb-3">
+                <label for="materia" class="form-label">Matéria</label>
+                <select id="materia" class="form-select">
+                    <option value="" disabled selected>Selecione a matéria</option>
+                    <option value="matematica">Matemática</option>
+                    <option value="portugues">Português</option>
+                    <option value="historia">História</option>
+                    <option value="historia">Biologia</option>
+                    <option value="historia">Física</option>
+                    <option value="historia">Química</option>
+                    <option value="historia">Geografia</option>
+                    <option value="historia">Educação Física</option>
+                </select>
+            </div>
+
+    <!-- Campo de texto para Categoria -->
+<div class="mb-3">
+    <label for="categoria" class="form-label">Categoria</label>
+    <input type="text" id="categoria" class="form-control" placeholder="Digite a categoria (ex: Álgebra, Gramática)">
+</div>
+
+<!-- Campo de texto para Subcategoria -->
+<div class="mb-3">
+    <label for="subcategoria" class="form-label">Subcategoria</label>
+    <input type="text" id="subcategoria" class="form-control" placeholder="Digite a subcategoria (ex: Equações, Verbos)">
+</div>
+
+
+            <!-- Botão de Adicionar Conteúdo -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5>Conteúdo</h5>
+                <button id="addContentBtn" class="btn btn-outline-primary btn-sm">+ Adicionar Conteúdo</button>
+            </div>
+
+            <!-- Área para Exibir os Tipos de Conteúdo Adicionados -->
+            <div id="conteudoContainer" class="mb-4"></div>
+
+            <!-- Botão para Criar o Tot -->
+            <button id="createTotBtn" class="btn btn-primary w-100 mt-4">Criar Tot</button>
+        </div>
+
+        <!-- Modal para Seleção de Conteúdo -->
+        <div class="modal fade" id="contentModal" tabindex="-1" aria-labelledby="contentModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="contentModalLabel">Selecione o Tipo de Conteúdo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-action" onclick="selectContent('texto')">Texto</li>
+                            <li class="list-group-item list-group-item-action" onclick="selectContent('imagem')">Imagem</li>
+                            <li class="list-group-item list-group-item-action" onclick="selectContent('vídeo')">Vídeo</li>
+                            <li class="list-group-item list-group-item-action" onclick="selectContent('link')">Link</li>
+                            <li class="list-group-item list-group-item-action" onclick="selectContent('citação')">Citação</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navegação Inferior -->
+         <div class="bottom-nav shadow fixed-bottom d-flex justify-content-around py-2 bg-light">
+        <i class="bi bi-house-door-fill"></i>
+        <i class="bi bi-bell-fill"></i>
+        <i class="bi bi-gear-fill"></i>
+    </div>
+    </div>
+
+        <!-- Modal de Sucesso -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Tot Criado com Sucesso!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    O TOT foi criado com sucesso. O que você gostaria de fazer agora?
+                </div>
+                <div class="modal-footer">
+                    <button id="createExerciseBtn" class="btn btn-primary">Criar Exercícios</button>
+                    <button id="laterBtn" class="btn btn-secondary" data-bs-dismiss="modal">Mais Tarde</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+            <!-- Modal de Confirmação -->
+        <div class="modal fade" id="confirmBackModal" tabindex="-1" aria-labelledby="confirmBackModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="confirmBackModalLabel">Confirmação</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                Tem certeza de que deseja sair? As alterações não salvas serão perdidas.
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="confirmBackButton" class="btn btn-danger">Sim, sair</button>
+                </div>
+            </div>
+            </div>
+        </div>
+  
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const addContentBtn = document.getElementById('addContentBtn');
+        const conteudoContainer = document.getElementById('conteudoContainer');
+        const createTotBtn = document.getElementById('createTotBtn');
+        const contentModal = new bootstrap.Modal(document.getElementById('contentModal'));
+
+        // Abrir o modal ao clicar no botão de adicionar conteúdo
+        addContentBtn.addEventListener('click', () => {
+            contentModal.show();
+        });
+
+        // Função para tratar a seleção de conteúdo
+        function selectContent(type) {
+            let contentHtml = '';
+
+            switch (type) {
+                case 'texto':
+                    contentHtml = `
+                        <div class="content-item mb-3">
+                            <label class="form-label">Texto</label>
+                            <textarea class="form-control" rows="3" placeholder="Digite o texto"></textarea>
+                            <a href="#" class="text-danger mt-1 d-block" onclick="removeContent(this)">Remover</a>
+                        </div>`;
+                    break;
+                case 'imagem':
+                    contentHtml = `
+                        <div class="content-item mb-3">
+                            <label class="form-label">Upload de Imagem</label>
+                            <input type="file" class="form-control" accept="image/*">
+                            <a href="#" class="text-danger mt-1 d-block" onclick="removeContent(this)">Remover</a>
+                        </div>`;
+                    break;
+                case 'vídeo':
+                    contentHtml = `
+                        <div class="content-item mb-3">
+                            <label class="form-label">Upload de Vídeo</label>
+                            <input type="file" class="form-control" accept="video/*">
+                            <a href="#" class="text-danger mt-1 d-block" onclick="removeContent(this)">Remover</a>
+                        </div>`;
+                    break;
+                case 'link':
+                    contentHtml = `
+                        <div class="content-item mb-3">
+                            <label class="form-label">Link</label>
+                            <input type="url" class="form-control" placeholder="Insira o URL">
+                            <a href="#" class="text-danger mt-1 d-block" onclick="removeContent(this)">Remover</a>
+                        </div>`;
+                    break;
+                case 'citação':
+                    contentHtml = `
+                        <div class="content-item mb-3">
+                            <label class="form-label">Citação</label>
+                            <input type="text" class="form-control" placeholder="Digite a citação">
+                            <a href="#" class="text-danger mt-1 d-block" onclick="removeContent(this)">Remover</a>
+                        </div>`;
+                    break;
+                default:
+                    alert("Tipo de conteúdo inválido.");
+                    return;
+            }
+
+            const contentElement = document.createElement('div');
+            contentElement.innerHTML = contentHtml;
+            conteudoContainer.appendChild(contentElement);
+
+            contentModal.hide();
+        }
+
+
+            // Função para remover o conteúdo
+        function removeContent(element) {
+        element.parentElement.remove();
+        }
+
+        // Enviar os dados para o backend
+    createTotBtn.addEventListener('click', async () => {
+    const materia = document.getElementById('materia').value;
+    const categoria = document.getElementById('categoria').value;
+    const subcategoria = document.getElementById('subcategoria').value;
+
+    const contents = Array.from(document.querySelectorAll('.content-item')).map(item => {
+        const type = item.querySelector('label').innerText.toLowerCase();
+        const value = item.querySelector('textarea, input').value;
+        return { type, value };
+    });
+
+    const userId = sessionStorage.getItem('user_id');
+    const data = {
+        professor_id: userId,
+        subject_area: materia,
+        category: categoria,
+        subcategory: subcategoria,
+        contents
+    };
+
+    try {
+        const response = await fetch('http://127.0.0.1:5000/professors/create_tot', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            const totId = result.tot_id;
+            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            successModal.show();
+
+            // Botão para Criar Exercícios
+            document.getElementById('createExerciseBtn').addEventListener('click', () => {
+                window.location.href = `http://127.0.0.1:5000/professor/criar_exercicio/${totId}`;
+            });
+
+            // Botão para Voltar à Lista de TOTs
+            document.getElementById('laterBtn').addEventListener('click', () => {
+                window.location.href = 'http://127.0.0.1:5000/professor/tots#';
+            });
+        } else {
+            alert(result.error || 'Erro ao criar o TOT.');
+        }
+    } catch (error) {
+        alert('Ocorreu um erro ao processar sua solicitação.');
+        console.error(error);
+    }
+});
+
+
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tots Criados</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../static/css/style.css" rel="stylesheet">
+    <link href="../../static/css/home_prof_style.css" rel="stylesheet">
+    <title>Lista de Exercícios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    .tot-item {
+    background-image: url('../../static/images/mathImage.png'); /* Substitua pelo caminho da sua imagem */
+    background-size: cover; 
+    background-position: center; 
+    color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+        .clickable {
+            cursor: pointer !important;
+        }
+     .black-block{
+        color: #fff;
+        background-color: black;
+    
+
+     }
+
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="back-button mb-3">
+                <a href="javascript:history.back()" class="text-decoration-none">
+                    <span style="font-size: 4rem;">&lt;</span>
+                </a>
+            </div>
+            <h1 class="fs-3 fw-bold">Lista de Tots Criados</h1>
+            <img src="../../static/images/Logo_menor.png" alt="Badge Icon" class="img-fluid" style="width: 60px;">
+        </div>
+
+        <div id="tots-list" class="container mt-4"></div>
+
+              <!-- Navegação Inferior -->
+    <div class="bottom-nav shadow fixed-bottom d-flex justify-content-around py-2 bg-light">
+        <i class="bi bi-house-door-fill"></i>
+        <i class="bi bi-bell-fill"></i>
+        <i class="bi bi-gear-fill"></i>
+    </div>
+    </div>
+
+
+
+
+    <!-- Botão Flutuante -->
+    <div class="fab-button shadow position-fixed bottom-4 end-0 m-3" onclick="window.location.href='http://127.0.0.1:5000/professor/criar_tot'">
+        <i class="bi bi-plus-lg"></i>
+    </div>
+
+    
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            const totsList = document.getElementById("tots-list");
+
+            const professorId = sessionStorage.getItem('user_id');
+        
+            fetch(`/professors/${professorId}/tots`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.tots) {
+                        data.tots.forEach(tot => {
+                            const totItem = `
+                             <div class="clickable card-body  tot-item clickable" data-id="${tot.id}">
+                                    <h5 class="font-weight-bold">${tot.category}</h5>
+                                    <p>${tot.subject_area} - ${tot.subcategory}</p>
+                                    <div class="black-block w-100 h-100 p-2 text-white">
+                                        Criado em: ${tot.created_at}
+                                    </div>
+                                </div>
+                            `;
+                            totsList.innerHTML += totItem;
+                        });
+                    } else {
+                        totsList.innerHTML = `<p>Nenhum Tot encontrado.</p>`;
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao carregar os TOTs:", error);
+                    totsList.innerHTML = `<p>Erro ao carregar os TOTs.</p>`;
+                });
+        
+            // Delegação de evento para os itens clicáveis
+            totsList.addEventListener('click', function(event) {
+                const totItem = event.target.closest('.tot-item');
+                
+                if (totItem) {
+                    const totId = totItem.getAttribute("data-id");
+                    if (totId) {
+                       
+                        window.location.href = `/professor/editar_tot/${totId}`;
+                    } else {
+                        console.log("Tot ID não encontrado");
+                    }
+                }
+            });
+        });
+        </script>
+        
+</body>
+
+</html>

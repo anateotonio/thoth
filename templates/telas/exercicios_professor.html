@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercícios Criados</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../static/css/style.css" rel="stylesheet">
+    <link href="../../static/css/home_prof_style.css" rel="stylesheet">
+    <style>
+        .exercise-item { 
+            background-color: #6C63FF; 
+            color: #fff; 
+            padding: 15px; 
+            border-radius: 10px; 
+            margin-bottom: 10px; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="back-button mb-3">
+                <a href="javascript:history.back()" class="text-decoration-none">
+                    <span style="font-size: 4rem;">&lt;</span>
+                </a>
+            </div>
+            <h1 class="fs-3 fw-bold">Lista de Exercícios Criados</h1>
+            <img src="../../static/images/Logo_menor.png" alt="Badge Icon" class="img-fluid" style="width: 60px;">
+        </div>
+
+        <!-- Container para os exercícios -->
+        <div id="exercises-list" class="container mt-4"></div>
+    </div>
+
+     <!-- Navegação Inferior -->
+     <div class="bottom-nav shadow fixed-bottom d-flex justify-content-around py-2 bg-light">
+        <i class="bi bi-house-door-fill"></i>
+        <i class="bi bi-bell-fill"></i>
+        <i class="bi bi-gear-fill"></i>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+    const exercisesList = document.getElementById("exercises-list");
+
+    // Substitua com o id do professor do sessionStorage ou outro mecanismo
+    const professorId = sessionStorage.getItem('user_id');
+    console.log(professorId);
+
+    // Faz a requisição para obter os exercícios do professor
+        fetch(`/professor/exercicios/${professorId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar os exercícios');
+                }
+                return response.json();  // Converte a resposta para JSON
+            })
+            .then(data => {
+                if (data.exercises && data.exercises.length > 0) {
+                    data.exercises.forEach(exercise => {
+                        const exerciseItem = `
+                            <div class="exercise-item" data-id="${exercise.id}">
+                                <h5>${exercise.title}</h5>
+                                <p>${exercise.statement}</p>
+                                <p><strong>Pontos:</strong> ${exercise.points}</p>
+                            </div>
+                        `;
+                        exercisesList.innerHTML += exerciseItem;
+                    });
+                } else {
+                    exercisesList.innerHTML = `<p>Nenhum exercício encontrado.</p>`;
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao carregar os exercícios:", error);
+                exercisesList.innerHTML = `<p>Erro ao carregar os exercícios.</p>`;
+            });
+
+        // Delegação de evento para os itens clicáveis
+        exercisesList.addEventListener('click', function(event) {
+            const exerciseItem = event.target.closest('.exercise-item');
+            
+            if (exerciseItem) {
+                const exerciseId = exerciseItem.getAttribute("data-id");
+                if (exerciseId) {
+                    window.location.href = `/professor/editar_exercicio/${exerciseId}`;
+                } else {
+                    console.log("ID do exercício não encontrado");
+                }
+            }
+        });
+    });
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de Tot</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="../../static/css/home_prof_style.css" rel="stylesheet">
+
+    <style>
+        .exercise-item { 
+            background-color: #6C63FF; 
+            color: #fff; 
+            padding: 15px; 
+            border-radius: 10px; 
+            margin-bottom: 10px; 
+            cursor: pointer; /* Adiciona o cursor de mãozinha */
+        }
+        .exercise-item:hover { 
+            background-color: #5A50E6; /* Cor de hover para visualização melhor */
+        }
+
+        .fab-button {
+        background-color: #6C63FF; /* Cor de fundo roxa */
+        color: white; /* Cor do ícone */
+        border-radius: 50%; /* Bordas arredondadas */
+        width: 70px; /* Largura maior */
+        height: 70px; /* Altura maior */
+        display: flex; /* Alinha o conteúdo */
+        justify-content: center; /* Alinha horizontalmente */
+        align-items: center; /* Alinha verticalmente */
+        font-size: 30px; /* Tamanho maior do ícone */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para o botão */
+        transition: all 0.3s ease; /* Transição suave para o hover */
+    }
+
+    .fab-button:hover {
+        background-color: white; /* Cor de fundo branca no hover */
+        color: #6C63FF; /* Cor do ícone roxa no hover */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Sombra mais intensa no hover */
+    }
+    </style>
+</head>
+<body>
+
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="back-button mb-3">
+                <a href="javascript:history.back()" class="text-decoration-none">
+                    <span style="font-size: 4rem;">&lt;</span>
+                </a>
+            </div>
+            <h1 class="fs-3 fw-bold">Lista de Exercícios do TOT</h1>
+            <img src="{{ url_for('static', filename='images/Logo_menor.png') }}" alt="Badge Icon" class="img-fluid" style="width: 60px;">
+        </div>
+
+        <!-- Container para os exercícios -->
+        <div id="exercises-list" class="container mt-4"></div>
+
+           <!-- Botão Flutuante -->
+            <div id="plus"class="fab-button shadow position-fixed bottom-4 end-0 m-3" onclick="window.location.href='http://127.0.0.1:5000/professor/criar_exercicio/<int:tot_id>'">
+                <i class="bi bi-plus-lg"></i>
+            </div>
+      <!-- Navegação Inferior -->
+    <div class="bottom-nav shadow fixed-bottom d-flex justify-content-around py-2 bg-light">
+        <i class="bi bi-house-door-fill"></i>
+        <i class="bi bi-bell-fill"></i>
+        <i class="bi bi-gear-fill"></i>
+    </div>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Pega o ID do TOT da URL
+            const totId = window.location.pathname.split("/").pop();
+
+            // Seleciona o botão flutuante
+            const fabButton = document.getElementById("plus");
+
+            // Atualiza o href do botão com o totId
+            fabButton.onclick = function() {
+                window.location.href = `http://127.0.0.1:5000/professor/criar_exercicio/${totId}`;
+            };
+        });
+        document.addEventListener("DOMContentLoaded", () => {
+            const exercisesList = document.getElementById("exercises-list");
+
+            // Substitua com o ID do TOT da URL
+            const totId = window.location.pathname.split("/").pop(); // Pega o ID do TOT da URL
+            console.log(totId);
+
+            // Faz a requisição para obter os exercícios do TOT
+            fetch(`/professor/exercicios/tot/${totId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao buscar os exercícios');
+                    }
+                    return response.json();  // Converte a resposta para JSON
+                })
+                .then(data => {
+                    if (data.exercises && data.exercises.length > 0) {
+                        data.exercises.forEach(exercise => {
+                            const exerciseItem = `
+                                <div class="exercise-item" data-id="${exercise.id}">
+                                    <h5>${exercise.title}</h5>
+                                    <p>${exercise.statement}</p>
+                                    <p><strong>Pontos:</strong> ${exercise.points}</p>
+                                </div>
+                            `;
+                            exercisesList.innerHTML += exerciseItem;
+                        });
+                    } else {
+                        exercisesList.innerHTML = `<p>Nenhum exercício encontrado.</p>`;
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao carregar os exercícios:", error);
+                    exercisesList.innerHTML = `<p>Erro ao carregar os exercícios.</p>`;
+                });
+
+            // Delegação de evento para os itens clicáveis
+            exercisesList.addEventListener('click', function(event) {
+                const exerciseItem = event.target.closest('.exercise-item');
+                
+                if (exerciseItem) {
+                    const exerciseId = exerciseItem.getAttribute("data-id");
+                    if (exerciseId) {
+                        window.location.href = `/professor/editar_exercicio/${exerciseId}`;
+                    } else {
+                        console.log("ID do exercício não encontrado");
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

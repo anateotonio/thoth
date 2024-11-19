@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: meuuser
+      POSTGRES_PASSWORD: senha123
+      POSTGRES_DB: meubanco
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  flask-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: postgresql://meuuser:senha123@postgres-db:5432/meubanco
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+
+volumes:
+  postgres-data:
