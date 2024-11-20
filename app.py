@@ -4,6 +4,7 @@ from routes.student_routes import student_routes
 from routes.professor_routes import professor_routes
 from routes.auth_routes import auth_routes
 from services.professor_service import *
+from services.student_service import *
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -19,6 +20,17 @@ app.register_blueprint(auth_routes)
 @app.route('/')
 def login():
     return render_template('telas/index.html')
+
+@app.route('/estudante/exercicios-tot/tot/<int:tot_id>', methods=['GET'])
+def list_exercises_for_tot_student(tot_id):
+    try:
+        # Obter os exercícios do TOT
+        exercises = get_exercises_by_tot_service(tot_id)
+        if 'error' in exercises:
+            return render_template('erro.html', error=exercises['error'])
+        return render_template('telas/listar_exercicios_estudante.html', exercises=exercises)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/cadastro')
 def register():
@@ -97,7 +109,21 @@ def list_exercises_for_tot(tot_id):
         return render_template('telas/listar_exercicios_tot.html', exercises=exercises)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@app.route('/leaderboard')
+def leaderboard_page():
+    leaderboard = get_leaderboard_service()
+    if "error" in leaderboard:
+        return render_template('telas/error.html', error=leaderboard["error"])
 
+    return render_template('telas/leaderboard.html', leaderboard=leaderboard)
+
+@app.route('/estudante/visualizar_tot/<int:tot_id>', methods=['GET'])
+def view_tot_page(tot_id):
+    tot = get_tot_by_id_service(tot_id)
+    if "error" in tot:
+        return render_template('telas/error.html', error=tot["error"])
+    return render_template('telas/visualizar_conteudo.html', tot=tot)
 
 
 if __name__ == '__main__':

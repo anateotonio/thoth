@@ -15,6 +15,9 @@
 ALTER TABLE students
 ADD COLUMN quantidadeDePontos INT DEFAULT 0;
 
+ALTER TABLE Students ADD COLUMN exerciciosconcluidos INT DEFAULT 0;
+
+
 CREATE TABLE professors (
     id SERIAL PRIMARY KEY,
     email VARCHAR(100) UNIQUE NOT NULL,

@@ -119,51 +119,65 @@
             const tots = await response.json();
 
             tots.forEach((tot, index) => {
-                const carouselItem = document.createElement("div");
-                carouselItem.className = `carousel-item ${index === 0 ? "active" : ""}`;
-                carouselItem.innerHTML = `
-            <div class="card" style="background-image: url('../../static/images/mathImage.png'); background-size: cover; background-position: center; text-align: center;">
-                <div class="card-body" style="background: rgba(0, 0, 0, 0.5); color: white; padding: 20px; border-radius: 10px;">
-                    <h5 class="card-title">${tot.subject_area} - ${tot.category}</h5>
-                    <p class="card-text">${tot.subcategory}</p>
-                </div>
-            </div>
+            const carouselItem = document.createElement("div");
+            carouselItem.className = `carousel-item ${index === 0 ? "active" : ""}`;
 
-                `;
-                carouselInner.appendChild(carouselItem);
-            });
+            // Adicionando o evento de clique para redirecionar
+            carouselItem.addEventListener("click", () => {
+                // Substitua 'nova_pagina.html' com a URL para a página desejada
+                window.location.href = `http://127.0.0.1:5000/estudante/visualizar_tot/${tot.id}`;
+    });
+                        carouselItem.innerHTML = `
+                            <div class="card" style="background-image: url('../../static/images/mathImage.png'); background-size: cover; background-position: center; text-align: center;">
+                                <div class="card-body" style="background: rgba(0, 0, 0, 0.5); color: white; padding: 20px; border-radius: 10px;">
+                                    <h5 class="card-title">${tot.subject_area} - ${tot.category}</h5>
+                                    <p class="card-text">${tot.subcategory}</p>
+                                </div>
+                            </div>
+                        `;
+
+                        carouselInner.appendChild(carouselItem);
+                    });
+
         } catch (error) {
             console.error("Erro ao carregar Tots:", error);
         }
     }
 
 
-        // Função para preencher carrossel "Em alta"
-       async function loadTrendingCarousel() {
-            const carouselInner = document.getElementById("carouselTrendingInner");
-            try {
+     // Função para preencher carrossel "Em alta"
+    async function loadTrendingCarousel() {
+        const carouselInner = document.getElementById("carouselTrendingInner");
+        try {
             const response = await fetch('http://127.0.0.1:5000/students/random_tots?count=5');
             const tots = await response.json();
 
             tots.forEach((tot, index) => {
                 const carouselItem = document.createElement("div");
                 carouselItem.className = `carousel-item ${index === 0 ? "active" : ""}`;
-                carouselItem.innerHTML = `
-            <div class="card" style="background-image: url('../../static/images/mathImage.png'); background-size: cover; background-position: center; text-align: center;">
-                <div class="card-body" style="background: rgba(0, 0, 0, 0.5); color: white; padding: 20px; border-radius: 10px;">
-                    <h5 class="card-title">${tot.subject_area} - ${tot.category}</h5>
-                    <p class="card-text">${tot.subcategory}</p>
-                </div>
-            </div>
 
+                // Adicionando o evento de clique para redirecionar
+                carouselItem.addEventListener("click", () => {
+                    // Substitua 'nova_pagina.html' com a URL para a página desejada
+                    window.location.href = `http://127.0.0.1:5000/estudante/visualizar_tot/${tot.id}`;
+                });
+
+                carouselItem.innerHTML = `
+                    <div class="card" style="background-image: url('../../static/images/mathImage.png'); background-size: cover; background-position: center; text-align: center;">
+                        <div class="card-body" style="background: rgba(0, 0, 0, 0.5); color: white; padding: 20px; border-radius: 10px;">
+                            <h5 class="card-title">${tot.subject_area} - ${tot.category}</h5>
+                            <p class="card-text">${tot.subcategory}</p>
+                        </div>
+                    </div>
                 `;
+
                 carouselInner.appendChild(carouselItem);
             });
         } catch (error) {
             console.error("Erro ao carregar Tots:", error);
         }
-           
-    }
+}
+
 
 
         // Chamada das funções de preenchimento

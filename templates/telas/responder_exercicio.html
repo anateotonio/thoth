@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Visualização de Exercício</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../static/css/style.css">
+        <link rel="stylesheet" href="../../static/css/home_prof_style.css">
+    </head>
+<body>
+    <input type="hidden" id="exerciseId" value="{{ exercise_id }}">
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="back-button mb-3">
+                <a href="#" id="back-button" class="text-decoration-none">
+                    <span style="font-size: 4rem;">&lt;</span>
+                </a>
+            </div>
+            <h1 class="fs-3 fw-bold">Responder Exercício</h1>
+            <img src="../../static/images/Logo_menor.png" alt="Badge Icon" class="img-fluid" style="width: 60px;">
+        </div>
+
+        <!-- Título -->
+        <div class="mb-3">
+            <label for="titulo" class="form-label">Título</label>
+            <textarea id="titulo" class="form-control" disabled></textarea>
+        </div>
+
+        <!-- Enunciado -->
+        <div class="mb-3">
+            <label for="enunciado" class="form-label">Enunciado</label>
+            <textarea id="enunciado" class="form-control" disabled></textarea>
+        </div>
+
+        <!-- Alternativas -->
+        <div class="mb-3">
+            <label class="form-label">Alternativas</label>
+            <div id="alternativas-container"></div>
+        </div>
+
+        <!-- Pontuação -->
+        <div class="mb-3">
+            <label for="pontos" class="form-label">Pontos</label>
+            <textarea id="pontos" class="form-control" disabled></textarea>
+        </div>
+    <!-- Botão de Enviar Resposta -->
+    <button class="btn btn-success w-100" id="enviar-resposta">Enviar Resposta</button>
+
+
+        <!-- Navegação Inferior -->
+        <div class="bottom-nav shadow fixed-bottom d-flex justify-content-around py-2 bg-light">
+            <i class="bi bi-house-door-fill"></i>
+            <i class="bi bi-bell-fill"></i>
+            <i class="bi bi-gear-fill"></i>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Pega o valor do exerciseId diretamente da URL
+        const exerciseId = window.location.pathname.split('/').pop();
+
+        // Função para carregar o exercício
+        async function carregarExercicio() {
+            const response = await fetch(`/professor/exercicio/${exerciseId}`);
+            const data = await response.json();
+
+            // Preenche os campos com os dados existentes
+            document.getElementById('titulo').value = data.title;
+            document.getElementById('enunciado').value = data.statement;
+            document.getElementById('pontos').value = data.points;
+
+            // Carregar alternativas
+            const container = document.getElementById('alternativas-container');
+            container.innerHTML = '';
+            data.alternatives.forEach((alt, index) => {
+                const alternativa = document.createElement('div');
+                alternativa.classList.add('input-group', 'mb-2', 'alternativa');
+                alternativa.innerHTML = `
+                    <span class="input-group-text ${alt.is_correct ? 'bg-success' : 'bg-danger'} toggle-color">${String.fromCharCode(65 + index)}</span>
+                    <input type="text" class="form-control" value="${alt.answer}" disabled>
+                `;
+                container.appendChild(alternativa);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // Carregar exercício quando a página for carregada
+            carregarExercicio();
+
+            // Excluir exercício
+            const excluirButton = document.getElementById('excluir-exercicio');
+            const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+
+            excluirButton.addEventListener('click', () => {
+                const deleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+                deleteModal.show();
+            });
+
+            // Confirmação da exclusão no modal
+            confirmDeleteButton.addEventListener('click', () => {
+                if (exerciseId) {
+                    fetch(`/professor/remover/exercicio/${exerciseId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                            successModal.show();
+                        } else if (data.error) {
+                            alert(`Erro: ${data.error}`);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro ao excluir exercício:', error);
+                        alert('Ocorreu um erro ao tentar excluir o exercício.');
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

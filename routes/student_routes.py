@@ -20,3 +20,42 @@ def get_random_tots():
         return jsonify(tots)
     except Exception as e:
         return jsonify({"error": str(e)})
+    
+@student_routes.route('/students/leaderboard', methods=['GET'])
+def get_leaderboard():
+    try:
+        leaderboard = get_leaderboard_service()
+        if "error" in leaderboard:
+            return jsonify({"error": leaderboard["error"]}), 500
+        return jsonify(leaderboard)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+
+@student_routes.route("/students/<student_id>", methods=["GET"])
+def get_student(student_id):
+    """
+    Rota para obter os dados de um estudante pelo ID.
+    :param student_id: str
+    :return: JSON com os dados do estudante ou erro 404
+    """
+    student = get_student_by_id_service(student_id)
+    if student:
+        return jsonify(student), 200
+    elif "error" in student:
+        return jsonify(student), 500
+    return jsonify({"error": "Estudante não encontrado"}), 404
+
+
+@student_routes.route('/tot/<int:tot_id>', methods=["GET"])
+def view_tot(tot_id):
+    """
+    Rota para visualizar um TOT e seus conteúdos pelo ID.
+    :param tot_id: int
+    :return: render_template com os dados do TOT ou erro 404
+    """
+    tot = get_tot_by_id_service(tot_id)
+    if tot:
+        return jsonify(tot), 200
+    return jsonify({"error": "TOT não encontrado"}), 404
+
