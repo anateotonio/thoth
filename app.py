@@ -99,6 +99,14 @@ def edit_exercise(exercise_id):
     # Caso a requisição seja GET, renderiza o template de edição com os dados do exercício
     return render_template('telas/editar_exercicio.html', exercise=exercise)
 
+@app.route('/estudante/visualizar_exercicio/<int:exercise_id>', methods=['GET', 'POST'])
+def view_exercise(exercise_id):
+    exercise = get_exercise_by_id_service(exercise_id)
+    if 'message' in exercise:
+        return exercise['message'], 404  # Caso não encontre o exercício
+    # Caso a requisição seja GET, renderiza o template de edição com os dados do exercício
+    return render_template('telas/responder_exercicio.html', exercise=exercise)
+
 @app.route('/professor/exercicios-tot/tot/<int:tot_id>', methods=['GET'])
 def list_exercises_for_tot(tot_id):
     try:

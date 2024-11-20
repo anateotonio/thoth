@@ -1,21 +1,32 @@
 <!DOCTYPE html>
 <html lang="pt">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Visualização de Exercício</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-        <link rel="stylesheet" href="../../static/css/style.css">
-        <link rel="stylesheet" href="../../static/css/home_prof_style.css">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualização de Exercício</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/style.css">
+    <link rel="stylesheet" href="../../static/css/home_prof_style.css">
+    <style>
+        /* Estilo para alternar a seleção */
+        .alternativa.selected {
+            background-color: #e9f5ff;
+            border: 2px solid rgb(149, 104, 213);
+        }
+
+        .alternativa {
+            cursor: pointer;
+        }
+    </style>
+</head>
 <body>
     <input type="hidden" id="exerciseId" value="{{ exercise_id }}">
     <div class="container py-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div class="back-button mb-3">
-                <a href="#" id="back-button" class="text-decoration-none">
+                <a href="javascript:void(0);" id="back-button" class="text-decoration-none" onclick="history.back()">
                     <span style="font-size: 4rem;">&lt;</span>
                 </a>
             </div>
@@ -38,7 +49,9 @@
         <!-- Alternativas -->
         <div class="mb-3">
             <label class="form-label">Alternativas</label>
-            <div id="alternativas-container"></div>
+            <div id="alternativas-container">
+                <!-- As alternativas serão carregadas aqui -->
+            </div>
         </div>
 
         <!-- Pontuação -->
@@ -46,9 +59,9 @@
             <label for="pontos" class="form-label">Pontos</label>
             <textarea id="pontos" class="form-control" disabled></textarea>
         </div>
-    <!-- Botão de Enviar Resposta -->
-    <button class="btn btn-success w-100" id="enviar-resposta">Enviar Resposta</button>
-
+        
+        <!-- Botão de Enviar Resposta -->
+        <button class="btn btn-success w-100" id="enviar-resposta">Enviar Resposta</button>
 
         <!-- Navegação Inferior -->
         <div class="bottom-nav shadow fixed-bottom d-flex justify-content-around py-2 bg-light">
@@ -58,74 +71,135 @@
         </div>
     </div>
 
+        <!-- Modal de Sucesso -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header bg-success text-white">
+            <h5 class="modal-title" id="successModalLabel">Parabéns!</h5>
+            </div>
+            <div class="modal-body">
+            <i class="bi bi-trophy-fill text-warning" style="font-size: 3rem;"></i>
+            <p class="mt-3">Agora você tem <span id="pontos-ganhos"></span> pontos!</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Resgatar</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    
+    <!-- Modal de Erro -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title" id="errorModalLabel">Errado!</h5>
+            </div>
+            <div class="modal-body">
+            <i class="bi bi-x-circle-fill text-danger" style="font-size: 3rem;"></i>
+            <p class="mt-3">Tente novamente!</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Tentar Novamente</button>
+        </div>
+        </div>
+        </div>
+    </div>
+  
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
-        // Pega o valor do exerciseId diretamente da URL
-        const exerciseId = window.location.pathname.split('/').pop();
+       // Pega o valor do exerciseId diretamente da URL
+const exerciseId = window.location.pathname.split('/').pop();
 
-        // Função para carregar o exercício
-        async function carregarExercicio() {
-            const response = await fetch(`/professor/exercicio/${exerciseId}`);
-            const data = await response.json();
+// Função para carregar o exercício
+async function carregarExercicio() {
+    const response = await fetch(`/professor/exercicio/${exerciseId}`);
+    const data = await response.json();
 
-            // Preenche os campos com os dados existentes
-            document.getElementById('titulo').value = data.title;
-            document.getElementById('enunciado').value = data.statement;
-            document.getElementById('pontos').value = data.points;
+    // Preenche os campos com os dados existentes
+    document.getElementById('titulo').value = data.title;
+    document.getElementById('enunciado').value = data.statement;
+    document.getElementById('pontos').value = data.points;
 
-            // Carregar alternativas
-            const container = document.getElementById('alternativas-container');
-            container.innerHTML = '';
-            data.alternatives.forEach((alt, index) => {
-                const alternativa = document.createElement('div');
-                alternativa.classList.add('input-group', 'mb-2', 'alternativa');
-                alternativa.innerHTML = `
-                    <span class="input-group-text ${alt.is_correct ? 'bg-success' : 'bg-danger'} toggle-color">${String.fromCharCode(65 + index)}</span>
-                    <input type="text" class="form-control" value="${alt.answer}" disabled>
-                `;
-                container.appendChild(alternativa);
-            });
-        }
+    // Carregar alternativas
+    const container = document.getElementById('alternativas-container');
+    container.innerHTML = '';
+    data.alternatives.forEach((alt, index) => {
+        const alternativa = document.createElement('div');
+        alternativa.classList.add('input-group', 'mb-2', 'alternativa');
+        alternativa.setAttribute('data-option-id', alt.id); // Atribui o ID da alternativa
+        alternativa.setAttribute('id', `alternativa-${alt.id}`); // ID único
+        alternativa.innerHTML = `
+           <span class="input-group-text text-white toggle-color" style="background-color: rgb(149, 104, 213);">${String.fromCharCode(65 + index)}</span>
+            <input type="text" class="form-control" value="${alt.answer}" disabled>
+        `;
 
-        document.addEventListener("DOMContentLoaded", () => {
-            // Carregar exercício quando a página for carregada
-            carregarExercicio();
+        // Adiciona evento de clique para cada alternativa
+        alternativa.addEventListener('click', () => {
+            // Remove a classe 'selected' de todas as alternativas
+            document.querySelectorAll('.alternativa').forEach(el => el.classList.remove('selected'));
 
-            // Excluir exercício
-            const excluirButton = document.getElementById('excluir-exercicio');
-            const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+            // Adiciona a classe 'selected' à alternativa clicada
+            alternativa.classList.add('selected');
 
-            excluirButton.addEventListener('click', () => {
-                const deleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
-                deleteModal.show();
-            });
-
-            // Confirmação da exclusão no modal
-            confirmDeleteButton.addEventListener('click', () => {
-                if (exerciseId) {
-                    fetch(`/professor/remover/exercicio/${exerciseId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.message) {
-                            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-                            successModal.show();
-                        } else if (data.error) {
-                            alert(`Erro: ${data.error}`);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Erro ao excluir exercício:', error);
-                        alert('Ocorreu um erro ao tentar excluir o exercício.');
-                    });
-                }
-            });
+            // Log do ID da alternativa selecionada
+            const alternativaId = alternativa.getAttribute('data-option-id');
+            console.log("Alternativa selecionada:", alternativaId);
         });
+
+        container.appendChild(alternativa);
+    });
+}
+
+carregarExercicio();
+
+document.getElementById('enviar-resposta').addEventListener('click', async () => {
+    const selectedOption = document.querySelector('.alternativa.selected');
+
+    if (!selectedOption) {
+        const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+        errorModal.show();
+        return;
+    }
+
+    // Usa 'data-option-id' para obter o ID
+    const chosenOptionId = parseInt(selectedOption.getAttribute('data-option-id'), 10);
+    console.log("ID da opção selecionada:", chosenOptionId);
+
+    try {
+        const response = await fetch(`/exercise/${exerciseId}/submit`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                student_id: sessionStorage.getItem('user_id'),
+                chosen_option_id: chosenOptionId
+            })
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            // Preenche os pontos no modal de sucesso
+            document.getElementById('pontos-ganhos').textContent = data.new_points;
+
+            // Exibe o modal de sucesso
+            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            successModal.show();
+        } else {
+            // Exibe o modal de erro
+            const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+            errorModal.show();
+        }
+    } catch (error) {
+        console.error("Erro:", error);
+        const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+        errorModal.show();
+    }
+});
+
     </script>
 </body>
 </html>

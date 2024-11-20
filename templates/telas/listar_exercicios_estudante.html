@@ -117,12 +117,12 @@
 
             // Delegação de evento para os itens clicáveis
             exercisesList.addEventListener('click', function(event) {
-                const exerciseItem = event.target.closest('.exercise-item');
-                
+                const exerciseItem = event.target.closest('.exercise-item');               
                 if (exerciseItem) {
                     const exerciseId = exerciseItem.getAttribute("data-id");
+                    console.log(exerciseId)
                     if (exerciseId) {
-                        window.location.href = `ATUALIZARRRRRRR`;
+                        window.location.href = `/estudante/visualizar_exercicio/${exerciseId}`;
                     } else {
                         console.log("ID do exercício não encontrado");
                     }

@@ -172,6 +172,59 @@ def get_tot_by_id_service(tot_id):
 
     except Exception as e:
         return {"error": str(e)}
+    
+def process_student_answer_service(student_id, exercise_id, chosen_option_id):
+    """
+    Processa a resposta do aluno e atualiza os pontos se estiver correta.
+    :param student_id: int
+    :param exercise_id: int
+    :param chosen_option_id: int
+    :return: dict com status do processamento e novos pontos
+    """
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Verificar se a opção escolhida está correta
+        cursor.execute("""
+            SELECT is_correct
+            FROM alternatives
+            WHERE exercise_id = %s AND id = %s
+        """, (exercise_id, chosen_option_id))
+        correct = cursor.fetchone()
+
+        if correct and correct[0]:  # Se a resposta está correta
+            # Obter os pontos do exercício
+            cursor.execute("""
+                SELECT points
+                FROM exercises
+                WHERE id = %s
+            """, (exercise_id,))
+            exercise_points = cursor.fetchone()[0]
+
+            # Atualizar os pontos do aluno
+            cursor.execute("""
+                UPDATE students
+                SET quantidadedepontos = quantidadedepontos + %s,
+                    exerciciosconcluidos = exerciciosconcluidos + 1
+                WHERE id = %s
+                RETURNING quantidadedepontos
+            """, (exercise_points, student_id))
+            new_points = cursor.fetchone()[0]
+
+            conn.commit()
+            cursor.close()
+            conn.close()
+
+            return {"success": True, "new_points": new_points}
+        else:
+            cursor.close()
+            conn.close()
+            return {"success": False, "error": "Resposta incorreta"}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+
 
 
 

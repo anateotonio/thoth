@@ -59,3 +59,26 @@ def view_tot(tot_id):
         return jsonify(tot), 200
     return jsonify({"error": "TOT não encontrado"}), 404
 
+@student_routes.route('/exercise/<int:exercise_id>/submit', methods=["POST"])
+def submit_exercise(exercise_id):
+    """
+    Processa a resposta do aluno para um exercício e atualiza seus pontos.
+    :param exercise_id: int
+    :return: JSON com resultado do processamento
+    """
+    data = request.get_json()
+    student_id = data.get("student_id")
+    chosen_option_id = data.get("chosen_option_id")
+
+    if not student_id or not chosen_option_id:
+        return jsonify({"error": "Dados incompletos"}), 400
+
+    # Verificar resposta e atualizar pontos
+    result = process_student_answer_service(student_id, exercise_id, chosen_option_id)
+
+    if result.get("success"):
+        return jsonify({"message": "Resposta processada com sucesso", "new_points": result["new_points"]}), 200
+    else:
+        return jsonify({"error": result.get("error", "Erro ao processar resposta")}), 400
+
+

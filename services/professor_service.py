@@ -352,12 +352,12 @@ def get_exercise_by_id_service(exercise_id):
 
         # Consulta para obter as alternativas do exercício
         cursor.execute("""
-            SELECT alternative, is_correct
+            SELECT id, alternative, is_correct
             FROM alternatives
             WHERE exercise_id = %s
         """, (exercise_id,))
         alternatives = [
-            {"answer": alt[0], "is_correct": alt[1]}
+            {"id": alt[0], "answer": alt[1], "is_correct": alt[2]}
             for alt in cursor.fetchall()
         ]
 
@@ -373,7 +373,6 @@ def get_exercise_by_id_service(exercise_id):
         }
     except Exception as e:
         return {"error": str(e)}
-
 
 
 def edit_exercise_service(exercise_id, data):
