@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badges - Thoth</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="../../static/css/style.css" rel="stylesheet">
+    <style>
+        body, .container, .badge-title, .badge-points {
+            font-family: 'Poppins', sans-serif;
+        }
+        .badge-item {
+            background-color: #f2e7fe;
+        }
+        .badge {
+        /* Estilo comum para os badges */
+        border: 2px solid #ccc;
+        padding: 10px;
+        margin: 5px;
+        display: inline-block;
+        text-align: center;
+        width: 120px;
+        height: 120px;
+        border-radius: 10px;
+        background-color: #f0f0f0;
+        transition: opacity 0.3s ease; /* Adiciona uma transição suave */
+    }
+
+    .badge.locked {
+        opacity: 0.5; /* Torna o badge mais opaco */
+        pointer-events: none; /* Desativa a interação com o badge */
+    }
+
+    .badge.unlocked {
+        opacity: 1; /* Torna o badge totalmente visível */
+    }
+
+    </style>
+</head>
+
+<body class="bg-light">
+
+    <div class="container py-5">
+        <header class="d-flex justify-content-between align-items-center mb-4">
+            <div class="back-button mb-3">
+                <a href="javascript:history.back()" class="text-decoration-none">
+                    <span style="font-size: 4rem;">&lt;</span>
+                </a>
+            </div>
+            <h1 class="fs-3 fw-bold">Badges</h1>
+            <img src="../../static/images/Logo_menor.png" alt="Badge Icon" class="img-fluid" style="width: 60px;">
+        </header>
+
+        <main id="badges-container">
+            <!-- Badge desbloqueada -->
+            <div class="badge-item unlocked d-flex align-items-center justify-content-between p-3 rounded mb-3 shadow-sm">
+                <div class="d-flex align-items-center gap-3">
+                    <img src="../../static/images/nivel1.png" alt="Badge Icon" class="img-fluid" style="width: 50px; height: auto;">
+                    <div>
+                        <p class="badge-title fw-bold mb-0">Explorador do Conhecimento</p>
+                        <p class="badge-points mb-0">500 pts</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="bottom-nav shadow d-flex justify-content-around py-3">
+            <i class="bi bi-house-door-fill fs-4 text-primary"></i>
+            <i class="bi bi-trophy-fill fs-4 text-primary"></i>
+            <i class="bi bi-search fs-4 text-primary"></i> 
+            <i class="bi bi-bookmark-fill fs-4 text-primary"></i>
+            <i class="bi bi-gear-fill fs-4 text-primary"></i>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const studentId = sessionStorage.getItem('user_id'); // Substitua pelo ID do estudante obtido dinamicamente
+            const badgesContainer = document.getElementById("badges-container");
+
+            try {
+                const response = await fetch(`/student/badges/${studentId}`);
+                if (!response.ok) throw new Error("Erro ao carregar os dados do estudante.");
+
+                const student = await response.json();
+                const badges = student.badges;
+
+                // Limpar o conteúdo existente no container antes de adicionar as novas badges
+                badgesContainer.innerHTML = '';
+
+                badges.forEach(badge => {
+                    const badgeElement = document.createElement("div");
+                    badgeElement.classList.add(
+                        "badge-item",
+                        "d-flex",
+                        "align-items-center",
+                        "justify-content-between",
+                        "p-3",
+                        "rounded",
+                        "mb-3",
+                        "shadow-sm"
+                    );
+
+                    // Adiciona a classe "unlocked" se a badge foi desbloqueada
+                    if (badge.unlocked) {
+                        badgeElement.classList.add("unlocked");
+                    }
+
+                    badgeElement.innerHTML = `
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="../../static/images/nivel${badge.id}.png" alt="Badge Icon" class="img-fluid" style="width: 50px; height: auto;">
+                            <div>
+                                <p class="badge-title fw-bold mb-0">${badge.name}</p>
+                                <p class="badge-points mb-0">${badge.required_points} pts</p>
+                            </div>
+                        </div>
+                        ${!badge.unlocked ? '<i class="bi bi-lock-fill fs-4"></i>' : ""}
+                    `;
+
+                    badgesContainer.appendChild(badgeElement);
+                });
+            } catch (error) {
+                console.error(error);
+                badgesContainer.innerHTML = `<p class="text-danger">Erro ao carregar as badges.</p>`;
+            }
+        });
+    </script>
+</body>
+</html>

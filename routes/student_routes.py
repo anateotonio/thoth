@@ -82,3 +82,16 @@ def submit_exercise(exercise_id):
         return jsonify({"error": result.get("error", "Erro ao processar resposta")}), 400
 
 
+@student_routes.route("/student/badges/<student_id>", methods=["GET"])
+def get_student_badges(student_id):
+    """
+    Rota para obter os dados de um estudante pelo ID e seus badges.
+    :param student_id: str
+    :return: JSON com os dados do estudante ou erro 404
+    """
+    student = get_student_with_badges(student_id)
+    if student:
+        return jsonify(student), 200
+    elif "error" in student:
+        return jsonify(student), 500
+    return jsonify({"error": "Estudante não encontrado"}), 404

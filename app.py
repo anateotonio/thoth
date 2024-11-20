@@ -36,6 +36,11 @@ def list_exercises_for_tot_student(tot_id):
 def register():
     return render_template('telas/register.html')
 
+@app.route('/estudante/badges')
+def badges():
+    return render_template('telas/badges.html')
+
+
 @app.route('/estudante/home')
 def student_home():
     return render_template('telas/home_estudante.html')

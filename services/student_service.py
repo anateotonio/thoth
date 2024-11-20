@@ -223,6 +223,57 @@ def process_student_answer_service(student_id, exercise_id, chosen_option_id):
             return {"success": False, "error": "Resposta incorreta"}
     except Exception as e:
         return {"success": False, "error": str(e)}
+    
+def get_student_with_badges(student_id):
+    """
+    Busca os dados de um estudante específico pelo ID e calcula os badges desbloqueados.
+    :param student_id: str
+    :return: dict com os dados do estudante e badges ou erro
+    """
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Consulta SQL para obter os dados do estudante pelo ID
+        cursor.execute("""
+            SELECT id, name, quantidadedepontos, exerciciosconcluidos
+            FROM Students
+            WHERE id = %s
+        """, (student_id,))
+
+        student = cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        if student:
+            student_data = {
+                "id": student[0],
+                "name": student[1],
+                "points": student[2],
+                "exercisesCompleted": student[3]
+            }
+
+            # Dados estáticos de badges
+            badges = [
+                {"id": 1, "name": "Explorador do Conhecimento", "required_points": 1000},
+                {"id": 2, "name": "Mestre dos Quizzes", "required_points": 5000},
+                {"id": 3, "name": "Guardião das Respostas", "required_points": 10000},
+                {"id": 4, "name": "Mago da Sabedoria", "required_points": 20000},
+                {"id": 5, "name": "Sábio Supremo", "required_points": 30000},
+            ]
+
+            # Adiciona a informação se o estudante desbloqueou cada badge
+            for badge in badges:
+                badge["unlocked"] = student[2] >= badge["required_points"]
+
+            student_data["badges"] = badges
+            return student_data
+        else:
+            return None
+    except Exception as e:
+        return {"error": str(e)}
+
+
 
 
 
