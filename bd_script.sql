@@ -68,3 +68,25 @@ CREATE TABLE alternatives (
     FOREIGN KEY (exercise_id) REFERENCES exercises(id) ON DELETE CASCADE
 );
 
+ CREATE TABLE missions (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    points INT NOT NULL,
+    progress INT DEFAULT 0,
+    goal INT NOT NULL
+);
+
+
+INSERT INTO missions (name, description, points, progress, goal) VALUES
+('Login por 7 dias consecutivos', 'Ganhe 100 pontos por entrar no Thoth por 7 dias consecutivos', 100, 0, 7),
+('Completar 10 exercícios corretamente', 'Ganhe 300 pontos por acertar 10 exercícios corretamente', 300, 0, 10),
+('Completar 10 exercícios', 'Ganhe 200 pontos por realizar 10 exercícios', 200, 0, 10),
+('Alcançar o Nível 5', 'Ganhe 500 pontos ao alcançar o Nível 5', 500, 0, 1),
+('Finalizar 5 missões', 'Ganhe 150 pontos ao completar 5 missões', 150, 0, 5),
+('Ganhar 1000 pontos', 'Ganhe 1000 pontos no total', 1000, 0, 1000),
+('Compartilhar perfil nas redes sociais', 'Ganhe 50 pontos ao compartilhar seu perfil nas redes sociais', 50, 0, 1),
+('Completar todos os desafios diários', 'Ganhe 200 pontos ao completar todos os desafios diários', 200, 0, 1),
+('Assistir 5 vídeos educativos', 'Ganhe 100 pontos por assistir a 5 vídeos educativos', 100, 0, 5),
+('Participar de uma discussão em grupo', 'Ganhe 150 pontos por participar de uma discussão em grupo', 150, 0, 1);
+

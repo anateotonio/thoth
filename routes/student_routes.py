@@ -95,3 +95,31 @@ def get_student_badges(student_id):
     elif "error" in student:
         return jsonify(student), 500
     return jsonify({"error": "Estudante não encontrado"}), 404
+
+@student_routes.route("/missions/random", methods=["GET"])
+def get_random_missions():
+    """
+    Rota para obter 5 missões aleatórias.
+    :return: JSON com as 5 missões aleatórias ou erro 500
+    """
+    missions = get_random_missions_service()
+    if missions:
+        return jsonify(missions), 200
+    else:
+        return jsonify({"error": "Erro ao buscar missões"}), 500
+    
+@student_routes.route('/search', methods=["GET"])
+def search_tots():
+    """
+    Busca conteúdos (TOTs) relacionados a categoria, subcategoria ou matéria.
+    :return: JSON com resultados da busca
+    """
+    query = request.args.get("query", "").strip().lower()
+    if not query:
+        return jsonify({"error": "Consulta vazia"}), 400
+
+    results = search_tots_service(query)
+    if results:
+        return jsonify({"results": results}), 200
+    else:
+        return jsonify({"message": "Nenhum resultado encontrado"}), 404

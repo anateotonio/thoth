@@ -1,5 +1,6 @@
 from utils.db import get_db_connection
 from models.student import Student
+import random
 
 def register_student(student: Student):
     try:
@@ -272,6 +273,81 @@ def get_student_with_badges(student_id):
             return None
     except Exception as e:
         return {"error": str(e)}
+    
+def get_random_missions_service():
+    """
+    Busca 5 missões aleatórias no banco de dados.
+    :return: lista de missões ou erro
+    """
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Consulta SQL para pegar todas as missões disponíveis
+        cursor.execute("""
+            SELECT id, name, description, points, progress, goal
+            FROM Missions
+        """)
+        all_missions = cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+        if all_missions:
+            # Seleciona aleatoriamente 5 missões
+            random_missions = random.sample(all_missions, 5)
+
+            # Prepara a lista de missões a ser retornada
+            missions_data = []
+            for mission in random_missions:
+                mission_data = {
+                    "id": mission[0],
+                    "name": mission[1],
+                    "description": mission[2],
+                    "points": mission[3],
+                    "progress": mission[4],
+                    "goal": mission[5]
+                }
+                missions_data.append(mission_data)
+
+            return missions_data
+        else:
+            return None
+    except Exception as e:
+        return {"error": str(e)}
+    
+def search_tots_service(query):
+    """
+    Busca TOTs no banco de dados com base na consulta.
+    :param query: str
+    :return: lista de TOTs encontrados
+    """
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Consulta para buscar TOTs por categoria, subcategoria ou matéria
+        cursor.execute("""
+            SELECT id, subject_area, category, subcategory, created_at
+            FROM tots
+            WHERE LOWER(subject_area) LIKE %s
+               OR LOWER(category) LIKE %s
+               OR LOWER(subcategory) LIKE %s
+        """, (f"%{query}%", f"%{query}%", f"%{query}%"))
+        
+        results = cursor.fetchall()
+        conn.close()
+
+        # Transformar os resultados em um formato amigável
+        return [{
+            "id": row[0],
+            "subject_area": row[1],
+            "category": row[2],
+            "subcategory": row[3],
+            "created_at": row[4].isoformat() if row[4] else None
+        } for row in results]
+    except Exception as e:
+        return {"error": str(e)}
+
 
 
 

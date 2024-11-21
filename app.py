@@ -40,6 +40,9 @@ def register():
 def badges():
     return render_template('telas/badges.html')
 
+@app.route('/estudante/perfil')
+def student_profile():
+    return render_template('telas/perfil_estudante.html')
 
 @app.route('/estudante/home')
 def student_home():

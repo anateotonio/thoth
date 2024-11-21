@@ -65,15 +65,20 @@
             margin-top: 20px;
         }
         .badge-carousel {
-            display: flex;
-            overflow-x: auto;
-            gap: 10px;
-            padding: 10px 0;
-        }
-        .badge-carousel img {
-            width: 50px;
-            height: 50px;
-        }
+        display: flex;
+        justify-content: space-between; /* Distribui igualmente entre os itens */
+        align-items: center; /* Centraliza verticalmente */
+        gap: 10px; /* Espaço entre os itens */
+        padding: 10px 0;
+    }
+
+       .badge-carousel img {
+        flex-shrink: 0; /* Impede as imagens de encolher */
+        width: 50px; /* Define uma largura fixa */
+        height: 50px; /* Define uma altura fixa */
+        margin: 0 auto; /* Opcional: centraliza horizontalmente */
+}
+
         .mission-card {
             background-color: #fff;
             border: 1px solid #ddd;
@@ -122,17 +127,23 @@
 </head>
 <body>
 
-    <div class="container">
-        <h1 class="profile-header">Seu Perfil</h1>
-        <div class="profile-image">
-            <img src="../../static/images/Logo_menor.png" alt="logo">
-        </div>
-        <p class="profile-subtitle">Explorador do Conhecimento</p>
-        <p class="profile-points">1,200 pts</p>
+        <div class="container py-5">
+            <header class="d-flex justify-content-between align-items-center mb-4">
+                <div class="back-button mb-3">
+                    <a href="javascript:history.back()" class="text-decoration-none">
+                        <span style="font-size: 4rem;">&lt;</span>
+                    </a>
+                </div>
+                <h1 class="fs-3 fw-bold">Seu perfil</h1>
+                <img src="../../static/images/Logo_menor.png" alt="Badge Icon" class="img-fluid" style="width: 60px;">
+            </header>
+            <p class="profile-subtitle">Explorador do Conhecimento</p>
+            <p class="profile-points">1,200 pts</p>
+    
 
         <div class="badge-section">
             <span class="badge-title">Badges</span>
-            <a href="#" class="badge-link">Ver todas</a>
+            <a href="http://127.0.0.1:5000/estudante/badges" class="badge-link">Ver todas</a>
         </div>
         <div class="badge-carousel" style="background-color: #E6D9FF;">
             <img src="../../static/images/nivel1.png" alt="Badge 1">
@@ -143,35 +154,7 @@
         </div>
 
         <h5 class="mt-4">Missões</h5>
-        <div class="mission-card">
-            <p class="mission-title">Login por 7 dias seguidos</p>
-            <p class="mission-description">Ganhe 100 pontos por entrar no Thoth</p>
-            <div class="progress-bar-container">
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <small>3/7</small>
-            </div>
-        </div>
-        <div class="mission-card">
-            <p class="mission-title">Acerte 10 exercícios</p>
-            <p class="mission-description">Ganhe 300 pontos por acertar exercícios</p>
-            <div class="progress-bar-container">
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <small>8/10</small>
-            </div>
-        </div>
-        <div class="mission-card">
-            <p class="mission-title">Realizar 10 exercícios</p>
-            <p class="mission-description">Ganhe 200 pontos por realizar exercícios</p>
-            <div class="progress-bar-container">
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <small>5/10</small>
-            </div>
+        <div id="missions-container">
         </div>
 
         <!-- Barra de navegação -->
@@ -185,5 +168,64 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        fetch('/missions/random')
+        .then(response => response.json())
+        .then(data => {
+            const missionsContainer = document.getElementById('missions-container');
+            data.forEach(mission => {
+                const missionCard = document.createElement('div');
+                missionCard.classList.add('mission-card');
+                missionCard.innerHTML = `
+                    <p class="mission-title">${mission.name}</p>
+                    <p class="mission-description">${mission.description}</p>
+                    <div class="progress-bar-container">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small>${mission.progress}/${mission.goal}</small>
+                    </div>
+                `;
+                missionsContainer.appendChild(missionCard);
+            });
+        })
+        .catch(error => console.error('Erro ao carregar missões:', error));
+
+        const studentId = sessionStorage.getItem('user_id'); // Substitua pelo ID dinâmico do estudante
+
+        fetch(`/student/badges/${studentId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Erro ao buscar dados do estudante");
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Atualiza o título do perfil
+                document.querySelector('.profile-subtitle').textContent = data.badges.find(b => b.unlocked).name;
+                
+                // Atualiza os pontos do estudante
+                document.querySelector('.profile-points').textContent = `${data.points} pts`;
+
+                // Carrega badges no carrossel
+                const badgeCarousel = document.querySelector('.badge-carousel');
+                badgeCarousel.innerHTML = ''; // Limpa badges antigos
+
+                data.badges.forEach(badge => {
+                    const badgeImage = document.createElement('img');
+                    badgeImage.src = `../../static/images/nivel${badge.id}.png`;
+                    badgeImage.alt = badge.name;
+
+                    if (!badge.unlocked) {
+                        badgeImage.style.opacity = "0.3"; // Badges bloqueadas ficam translúcidas
+                    }
+
+                    badgeCarousel.appendChild(badgeImage);
+                });
+            })
+            .catch(error => console.error("Erro ao carregar os dados do estudante:", error));
+
+    </script>
 </body>
 </html>
