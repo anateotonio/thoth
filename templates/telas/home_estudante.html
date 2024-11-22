@@ -49,6 +49,12 @@
                 </button>
             </div>
         </div>
+
+        <div class="d-flex justify-content-end mb-3">
+            <button id="clearResultsBtn" class="btn btn-secondary d-none">Limpar Resultados</button>
+        </div>
+        <div id="searchResults" class="row"></div>
+        
     
        <!-- Resultados da pesquisa -->
         <div id="searchResults" class="row d-none">
@@ -113,13 +119,22 @@
     </div>
 
     <!-- Barra de navegação inferior -->
-    <div class="bottom-nav">
-        <i class="bi bi-house-door-fill fs-4"></i>
-        <i class="bi bi-trophy-fill fs-4"></i>
-        <i class="bi bi-search fs-4"></i>
-        <i class="bi bi-bookmark-fill fs-4"></i>
-        <i class="bi bi-gear-fill fs-4"></i>
-    </div>
+    <footer class="bottom-nav shadow d-flex justify-content-around py-3">
+        <!-- Botão Home -->
+        <a href="http://127.0.0.1:5000/estudante/home" class="text-decoration-none">
+            <i class="bi bi-house-door-fill fs-4 text-primary"></i>
+        </a>
+    
+        <!-- Botão Troféu -->
+        <a href="http://127.0.0.1:5000/leaderboard" class="text-decoration-none">
+            <i class="bi bi-trophy-fill fs-4 text-primary"></i>
+        </a>
+    
+        <!-- Botão Perfil (ícone de pessoa) -->
+        <a href="http://127.0.0.1:5000/estudante/perfil" class="text-decoration-none">
+            <i class="bi bi-person-fill fs-4 text-primary"></i>
+        </a>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
@@ -157,6 +172,8 @@
                 console.error("Erro ao carregar Tots:", error);
             }
         }
+
+        
 
         // Função para preencher carrossel "Em alta"
         async function loadTrendingCarousel() {
@@ -230,14 +247,28 @@ document.getElementById("searchButton").addEventListener("click", searchTOTs);
 
 
         // Função para exibir os resultados da pesquisa na tela
-    function displayResults(results) {
+        function displayResults(results) {
     const resultsContainer = document.getElementById("searchResults");
-    resultsContainer.innerHTML = '';  // Limpar resultados anteriores
+    const clearResultsBtn = document.getElementById("clearResultsBtn");
+
+    resultsContainer.innerHTML = ''; // Limpar resultados anteriores
+
+    if (results.length > 0) {
+        // Mostrar botão de limpar resultados
+        clearResultsBtn.classList.remove("d-none");
+    } else {
+        // Ocultar botão de limpar caso não haja resultados
+        clearResultsBtn.classList.add("d-none");
+    }
 
     // Loop pelos resultados e gerar as divs
     results.forEach(result => {
         const resultDiv = document.createElement("div");
-        resultDiv.className = "col-12 col-md-6 col-lg-4 mb-4";  // Coluna responsiva
+        resultDiv.className = "col-12 col-md-6 col-lg-4 mb-4"; // Coluna responsiva
+
+        resultDiv.addEventListener("click", () => {
+            window.location.href = `http://127.0.0.1:5000/estudante/visualizar_tot/${result.id}`;
+        });
 
         resultDiv.innerHTML = `
             <div class="card tot-item">
@@ -255,9 +286,20 @@ document.getElementById("searchButton").addEventListener("click", searchTOTs);
 
     // Exibe os resultados e esconde os carrosséis
     resultsContainer.classList.remove("d-none");
-
 }
 
+// Função para limpar os resultados
+function clearResults() {
+    const resultsContainer = document.getElementById("searchResults");
+    const clearResultsBtn = document.getElementById("clearResultsBtn");
+
+    resultsContainer.innerHTML = ''; // Remove os elementos de resultado
+    resultsContainer.classList.add("d-none"); // Oculta o contêiner
+    clearResultsBtn.classList.add("d-none"); // Oculta o botão
+}
+
+// Adiciona evento ao botão de limpar
+document.getElementById("clearResultsBtn").addEventListener("click", clearResults);
 
         // Chamada das funções de preenchimento
         loadTrendingCarousel();
