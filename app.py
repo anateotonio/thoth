@@ -122,7 +122,7 @@ def list_exercises_for_tot(tot_id):
         exercises = get_exercises_by_tot_service(tot_id)
         if 'error' in exercises:
             return render_template('erro.html', error=exercises['error'])
-        return render_template('telas/listar_exercicios_tot.html', exercises=exercises)
+        return render_template('telas/listar_exercicios_tot_prof.html', exercises=exercises)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     

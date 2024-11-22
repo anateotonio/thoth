@@ -15,7 +15,7 @@
     <div class="container py-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div class="back-button mb-3">
-                <a href="#" id="back-button" class="text-decoration-none">
+                <a href="javascript:history.back()" id="back-button" class="text-decoration-none">
                     <span style="font-size: 4rem;">&lt;</span>
                 </a>
                 
@@ -94,23 +94,26 @@
             </div>
         </div>
 
-        <!-- Modal de Sucesso -->
-        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="successModalLabel">Exercício Excluído</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        O exercício foi excluído com sucesso!
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="successCloseButton" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
-                    </div>
+       <!-- Modal de Sucesso -->
+        <div class="modal fade" id="modalSucesso" tabindex="-1" role="dialog" aria-labelledby="modalSucessoLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="modalSucessoLabel">Exercício Criado com Sucesso!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                O exercício foi criado com sucesso. Você pode agora continuar.
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                 </div>
             </div>
+            </div>
         </div>
+  
 
 
 
@@ -144,6 +147,9 @@
 
     <script>
 
+
+
+
         
         
         // Pega o valor do exerciseId diretamente da URL
@@ -170,7 +176,21 @@
             });
         });
 
-    
+        // Função para alternar a cor da alternativa entre correta e incorreta
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('toggle-color')) {
+                const span = e.target;
+                
+                // Alterna a cor
+                if (span.classList.contains('bg-success')) {
+                    span.classList.remove('bg-success');
+                    span.classList.add('bg-danger');
+                } else {
+                    span.classList.remove('bg-danger');
+                    span.classList.add('bg-success');
+                }
+            }
+        });
 
         // Função para carregar o exercício
         async function carregarExercicio() {
@@ -314,11 +334,13 @@
 
 
         // Captura o clique no botão de voltar
+// Captura o clique no botão de voltar
         document.getElementById('back-button').addEventListener('click', function(event) {
-            event.preventDefault();
+            event.preventDefault();  // Evita o comportamento padrão
             const backModal = new bootstrap.Modal(document.getElementById('confirmBackModal'));
-            backModal.show();
+            backModal.show();  // Exibe o modal
         });
+
 
         // Confirmação de voltar no modal
         confirmBackButton.addEventListener('click', () => {
