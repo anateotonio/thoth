@@ -106,7 +106,7 @@ INSERT INTO contents (tot_id, content_type, content_data)
 VALUES
 (1, 'texto', 'A equação linear é uma equação de primeiro grau. Exemplo: 2x + 3 = 5.'),
 (1, 'citação', '“Uma equação linear é uma equação algébrica em que a variável aparece no primeiro grau. Exemplo clássico é a equação 2x + 3 = 5.” - Stewart, James, "Cálculo: O que todo estudante de cálculo precisa saber", 2019');
-(1, 'link', 'https://www.youtube.com/embed/nvT15exeXOA'),
+(1, 'vídeo', 'https://www.youtube.com/embed/nvT15exeXOA'),
 (1, 'imagem', 'https://content.prodigioeducacao.com/prodigio/upload/7077b3fa-fdde-442a-96f3-e74590714d00.jpeg');
 
 (2, 'texto', 'O cálculo de áreas é uma disciplina fundamental da geometria que trata da determinação da quantidade de espaço contido dentro de uma figura plana ou bidimensional. Esse conceito é essencial para a compreensão e aplicação de muitas áreas da matemática, física, engenharia e até mesmo em problemas do cotidiano, como no cálculo de materiais para construção, plantio de áreas agrícolas ou até no planejamento de terrenos urbanos.'),

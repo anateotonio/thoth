@@ -325,13 +325,13 @@ def search_tots_service(query):
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        # Consulta para buscar TOTs por categoria, subcategoria ou matéria
+        # Consulta para buscar TOTs, removendo os acentos para fazer a comparação sem acentuação
         cursor.execute("""
             SELECT id, subject_area, category, subcategory, created_at
             FROM tots
-            WHERE LOWER(subject_area) LIKE %s
-               OR LOWER(category) LIKE %s
-               OR LOWER(subcategory) LIKE %s
+            WHERE unaccent(LOWER(subject_area)) LIKE unaccent(%s)
+               OR unaccent(LOWER(category)) LIKE unaccent(%s)
+               OR unaccent(LOWER(subcategory)) LIKE unaccent(%s)
         """, (f"%{query}%", f"%{query}%", f"%{query}%"))
         
         results = cursor.fetchall()
@@ -347,6 +347,7 @@ def search_tots_service(query):
         } for row in results]
     except Exception as e:
         return {"error": str(e)}
+
 
 
 

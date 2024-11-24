@@ -187,14 +187,17 @@
 
                     // Limita a lista para os 5 primeiros exercícios
                     exercises.slice(0, 5).forEach(exercise => {
+                        const exerciseId = exercise[0];
                         const title = exercise[1];  // O título é o segundo valor do array
                         const subjectArea = exercise[2]; // O subject_area está no terceiro valor
 
                         const item = `
-                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="background-color: #6C63FF; color: #fff;">
-                                ${title}
-                                <span class="badge bg-light text-dark">${subjectArea}</span>
-                            </a>
+                        <a href="http://127.0.0.1:5000/professor/editar_exercicio/${exerciseId}" 
+                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" 
+                        style="background-color: #6C63FF; color: #fff;">
+                            ${title}
+                            <span class="badge bg-light text-dark">${subjectArea}</span>
+                        </a>
                         `;
                         exerciseList.insertAdjacentHTML('beforeend', item);
                     });
