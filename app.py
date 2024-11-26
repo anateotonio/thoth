@@ -141,6 +141,25 @@ def view_tot_page(tot_id):
         return render_template('telas/error.html', error=tot["error"])
     return render_template('telas/visualizar_conteudo.html', tot=tot)
 
+@app.route('/estudante/tots_por_categoria/<category>', methods=['GET'])
+def view_tots_by_category(category):
+    """
+    Rota para exibir os tópicos de uma categoria específica.
+    :param category: str (categoria dos tópicos)
+    :return: Renderiza o template com os tópicos ou erro
+    """
+    # Chamando a função que retorna os tópicos por categoria
+    categories = get_tots_by_subject_area_service(category)
+    
+    if "error" in categories:
+        return render_template('telas/error.html', error=categories["error"])
+    
+    # Passando os tópicos por categoria para o template
+    return render_template('telas/disciplinas_topicos.html', categories=categories)
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

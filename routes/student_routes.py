@@ -123,3 +123,16 @@ def search_tots():
         return jsonify({"results": results}), 200
     else:
         return jsonify({"message": "Nenhum resultado encontrado"}), 404
+
+@student_routes.route("/student/topics/<subject_area>", methods=["GET"])
+def get_topics(subject_area):
+    """
+    Rota para obter os tópicos por categoria.
+    :param category: str (categoria dos tópicos)
+    :return: JSON com os tópicos ou erro 404
+    """
+    topics = get_tots_by_subject_area_service(subject_area)
+    if "error" in topics:
+        return jsonify(topics), 500
+    return jsonify(topics), 200
+

@@ -357,3 +357,52 @@ def search_tots_service(query):
 
 
 
+
+    
+# Serviço para obter os tópicos por categoria
+def get_tots_by_subject_area_service(subject_area):
+    """
+    Busca todos os tópicos de uma área específica.
+    :param subject_area: str (nome da área de estudo)
+    :return: list de tópicos ou erro
+    """
+    try:
+        conn = get_db_connection()  # Função para obter a conexão com o banco
+        cursor = conn.cursor()
+
+        # Consulta SQL para obter os tópicos de uma área de estudo
+        cursor.execute("""
+            SELECT id, subject_area, category, subcategory 
+            FROM tots 
+            WHERE subject_area = %s
+        """, (subject_area,))
+
+        topics = cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+        if topics:
+            topics_data = []
+            for topic in topics:
+                topics_data.append({
+                    "id": topic[0],
+                    "subject_area": topic[1],
+                    "category": topic[2],
+                    "subcategory": topic[3],
+                })
+            return topics_data
+        else:
+            return {"error": "Nenhum TOT encontrado para esta área de estudo."}
+    except Exception as e:
+        return {"error": str(e)}
+
+
+
+
+
+
+
+
+
+
+

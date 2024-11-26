@@ -1,199 +1,99 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dinâmico - Thoth</title>
+    <title>Tots Criados</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="../../static/css/style.css" rel="stylesheet">
-
+    <link href="../../static/css/home_prof_style.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .bottom-nav i{
-            color: #6c63ff !important;
-        }
-        .container {
-            width: 100%;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 15px;
-            position: relative;
-            height: 90vh;
-            overflow-y: auto;
-        }
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            color: #6C63FF;
-            font-size: 24px;
-            font-weight: bold;
-            padding: 10px 0;
-        }
-        .header i {
-            font-size: 24px;
-        }
-        .search-bar {
-            margin: 15px 0;
-        }
-        .topic-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .topic-card {
-            position: relative;
-            border-radius: 10px;
-            overflow: hidden;
-            background-color: #eee;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            padding: 10px;
-        }
-        .topic-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-            opacity: 0.3;
-        }
-        .topic-title {
-            position: relative;
-            color: #ffffff;
-            font-weight: bold;
-            font-size: 16px;
-            z-index: 1;
-        }
-        .topic-subtitle {
-            position: relative;
-            color: #ffffff;
-            font-size: 12px;
-            z-index: 1;
-        }
-        .icon-bar {
-            display: flex;
-            justify-content: space-around;
+        .tot-item {
+            background-color: #6C63FF; 
+            color: #fff;
             padding: 15px;
-            background-color: #fff;
-            border-top: 1px solid #ddd;
-            position: sticky;
-            bottom: 0;
-            width: 100%;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px 10px 0 0;
+            border-radius: 10px;
+            margin-bottom: 10px;
         }
-        .icon-bar i {
-            font-size: 24px;
-            color: #6C63FF;
+        .clickable {
+            cursor: pointer !important;
         }
-
-        .container .d-flex #pageTitle  {
-            font-size: 24px;
-            color: #6C63FF;
-            font-weight: 600;
+        .black-block {
+            color: #fff;
+            background-color: black;
         }
-
     </style>
+    <script>    
+      const subjectArea = decodeURIComponent(window.location.pathname.split('/').pop());
+    document.addEventListener("DOMContentLoaded", function() {
+        // Substitui o texto do título com o valor de subjectArea
+        const subjectTitle = document.getElementById("subject-title");
+        if (subjectTitle) {
+            subjectTitle.textContent = `Lista de Tots da Disicplina: ${subjectArea}`;
+        }
+    });
+     </script>
 </head>
 <body>
-
-        <div class="container py-1">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div class="back-button mb-3">
-                    <a href="javascript:history.back()" class="text-decoration-none">
-                        <span style="font-size: 4rem;">&lt;</span>
-                    </a>
-                </div>
-                <span id="pageTitle">Título Dinâmico</span>
-                <img src="../../static/images/Logo_menor.png" alt="Badge Icon" class="img-fluid" style="width: 60px;">
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="back-button mb-3">
+                <a href="javascript:history.back()" class="text-decoration-none">
+                    <span style="font-size: 4rem;">&lt;</span>
+                </a>
             </div>
-    
-            <div class="search-bar my-3">
-                <div class="input-group">
-                    <input type="search" class="form-control" placeholder="Pesquisar...">
-                    <span class="input-group-text bg-white border-start-0">
-                        <i class="bi bi-search" style="color: #6c63ff;"></i>  <!-- Ícone de busca roxo -->
-                    </span>
-                </div>
-            </div>
+            <h1 class="fs-3 fw-bold" id="subject-title"></h1>
+            <img src="../../static/images/Logo_menor.png" alt="Badge Icon" class="img-fluid" style="width: 60px;">
+        </div>
 
-        <!-- Lista de Tópicos -->
-        <div class="topic-list" id="topicList"></div>
+        <div id="tots-list" class="container mt-4"></div>
 
-        <!-- Barra de navegação -->
+        <!-- Navegação Inferior -->
         <footer class="bottom-nav shadow d-flex justify-content-around py-3">
-            <!-- Botão Home -->
-            <a href="http://127.0.0.1:5000/estudante/home" class="text-decoration-none">
+            <a href="http://127.0.0.1:5000/professor/home" class="text-decoration-none">
                 <i class="bi bi-house-door-fill fs-4 text-primary"></i>
             </a>
-        
-            <!-- Botão Troféu -->
-            <a href="http://127.0.0.1:5000/leaderboard" class="text-decoration-none">
-                <i class="bi bi-trophy-fill fs-4 text-primary"></i>
-            </a>
-        
-            <!-- Botão Perfil (ícone de pessoa) -->
-            <a href="http://127.0.0.1:5000/estudante/perfil" class="text-decoration-none">
-                <i class="bi bi-person-fill fs-4 text-primary"></i>
-            </a>
+            <i class="bi bi-bell-fill fs-4 text-primary"></i>
+            <i class="bi bi-gear-fill fs-4 text-primary"></i>
         </footer>
-    
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+        <!-- Botão Flutuante -->
+        <div class="fab-button shadow position-fixed bottom-4 end-0 m-3" onclick="window.location.href='http://127.0.0.1:5000/professor/criar_tot'">
+            <i class="bi bi-plus-lg"></i>
+        </div>
+    </div>
+
     <script>
-        // Simulação de dados da API
-        const apiData = {
-            title: "Matemática",
-            topics: [
-                { title: "Soma de Arcos",  imageUrl: "https://via.placeholder.com/150" },
-                { title: "Plano Cartesiano", subtitle: "Matemática", imageUrl: "https://via.placeholder.com/150" },
-                { title: "Ponto médio, Baricentro...", subtitle: "Matemática", imageUrl: "https://via.placeholder.com/150" },
-                { title: "Teorema D'Alembert", subtitle: "Matemática", imageUrl: "https://via.placeholder.com/150" },
-                { title: "Polinômios", subtitle: "Matemática", imageUrl: "https://via.placeholder.com/150" },
-                { title: "Números Primos", subtitle: "Matemática", imageUrl: "https://via.placeholder.com/150" },
-                { title: "Hipótese de Riemann", subtitle: "Matemática", imageUrl: "https://via.placeholder.com/150" },
-                { title: "Geometria Diferencial", subtitle: "Matemática", imageUrl: "https://via.placeholder.com/150" }
-            ]
-        };
-
-        // Função para carregar dados da API e preencher a página
-        function loadPageContent() {
-            // Define o título da página
-            document.getElementById("pageTitle").innerText = apiData.title;
-
-            // Preenche a lista de tópicos
-            const topicList = document.getElementById("topicList");
-            apiData.topics.forEach(topic => {
-                const topicCard = document.createElement("div");
-                topicCard.className = "topic-card";
-                topicCard.innerHTML = `
-                    <img src="${topic.imageUrl}" alt="${topic.title}">
-                    <div class="topic-title">${topic.title}</div>
+       document.addEventListener("DOMContentLoaded", () => {
+    const totsList = document.getElementById("tots-list");
+    const subjectArea = window.location.pathname.split('/').pop();
+    
+    fetch(`/student/topics/${subjectArea}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data && !data.error) {
+                data.forEach(tot => {
+                    // Adicionando o redirecionamento ao clicar na div
+                    const totItem = `
+                        <div class="clickable card-body tot-item" 
+                             onclick="window.location.href='http://127.0.0.1:5000/estudante/visualizar_tot/${tot.id}'">
+                            <h5 class="font-weight-bold">${tot.category}</h5>
+                            <p>${tot.subcategory}</p>
+                        </div>
                     `;
-                    // <div class="topic-subtitle">${topic.subtitle}</div>
-                topicList.appendChild(topicCard);
-            });
-        }
+                    totsList.innerHTML += totItem;
+                });
+            } else {
+                totsList.innerHTML = `<p>Nenhum Tot encontrado para esta categoria.</p>`;
+            }
+        })
+        .catch(error => {
+            console.error("Erro ao carregar os TOTs:", error);
+            totsList.innerHTML = `<p>Erro ao carregar os TOTs.</p>`;
+        });
+});
 
-        // Carrega o conteúdo quando a página é carregada
-        loadPageContent();
     </script>
 </body>
 </html>

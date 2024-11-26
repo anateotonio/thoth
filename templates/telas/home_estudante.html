@@ -139,6 +139,18 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script>
+
+document.addEventListener("DOMContentLoaded", () => {
+        const carouselItems = document.querySelectorAll("#carouselSubjects .carousel-item");
+
+        carouselItems.forEach(item => {
+            item.addEventListener("click", () => {
+                const subject = item.querySelector("h5").textContent.trim(); // Obtém o texto da matéria
+                const urlSubject = subject.replace(/ /g, '_'); // Substitui espaços por "_", se necessário
+                window.location.href = `http://127.0.0.1:5000/estudante/tots_por_categoria/${urlSubject}`;
+            });
+        });
+    });
         // Função para preencher carrossel "Recomendado para você"
         async function loadRecommendedCarousel() {
             const carouselInner = document.getElementById("carouselRecommendedInner");
